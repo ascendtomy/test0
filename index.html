@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <style>
+        body {
+            font-family: "Courier New", Courier, monospace;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Sprečava scrollanje */
+            height: 100vh; /* Postavlja visinu stranice na visinu ekrana */
+            transition: background-color 0.3s, color 0.3s; /* Glatka promena boje */
+        }
+
+        /* Default boje za svetli režim */
+        body:not(.dark-mode) {
+            background-color: white;
+            color: black; /* Crna boja za tekst u svetlom režimu */
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background-color: #121212;
+            color: white; /* Bela boja za tekst u tamnom režimu */
+        }
+
+        /* Vreme */
+        .time {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 16px; /* Povećan font za vreme */
+            color: inherit; /* Nasleđuje boju od tela, u svetlom režimu crno, u tamnom belo */
+        }
+
+        /* Ikona za prebacivanje teme */
+        .theme-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .theme-toggle:hover {
+            transform: scale(1.2);
+        }
+
+        .container {
+            padding: 20px;
+            margin-left: 20px; /* Pomera sekcije ulevo */
+            float: left;
+            width: 75%; /* Prostor za levu sekciju */
+            margin-top: 30px; /* Razmak od vremena */
+        }
+
+        .contact-container {
+            float: left; /* Premesteno na levu stranu */
+            width: 20%; /* Prostor za desnu sekciju */
+            padding: 20px;
+            position: absolute;
+            bottom: 20px; /* Premesteno ispod sekcija */
+            left: 20px;
+        }
+
+        h1, h2 {
+            color: inherit; /* Nasleđuje boju od tela, crno za svetli, belo za tamni režim */
+        }
+
+        .section {
+            margin-bottom: 20px;
+            text-align: left; /* Sekcije levo poravnate */
+            cursor: pointer;
+            font-size: 12px; /* Smanjen font za naslove sekcija */
+        }
+
+        .subsection {
+            margin-left: 20px;
+            text-transform: uppercase; /* CAPSLOCK */
+            font-weight: normal; /* Isključivanje bolda */
+            display: none; /* Početno sakrivanje subsekcija */
+            font-size: 14px; /* Font za subsekcije */
+            color: inherit; /* Nasleđuje boju od tela, crno za svetli, belo za tamni režim */
+        }
+
+        .link {
+            color: inherit; /* Nasleđuje boju od tela */
+            text-decoration: none;
+            display: block;
+            margin: 5px 0;
+            font-size: 16px; /* Font za linkove unutar subsekcija */
+        }
+
+        .link:hover {
+            color: #555;
+        }
+
+        .contact {
+            font-size: 12px; /* Font za CONTACT sekciju */
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .contact a {
+            color: inherit; /* Nasleđuje boju od tela */
+            text-decoration: none;
+            font-size: 16px; /* Font za email link */
+        }
+
+        .contact a:hover {
+            color: #555;
+        }
+
+        /* Crni i beli krug za ikonu teme */
+        .theme-toggle.light-mode {
+            color: black;
+        }
+
+        .theme-toggle.dark-mode {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Vreme -->
+    <div class="time" id="time"></div>
+
+    <!-- Dark/Light Mode Switch (Ikona) -->
+    <div class="theme-toggle" id="theme-toggle">&#9899;</div> <!-- Crni krug za svetli režim -->
+
+    <div class="container">
+        <!-- STUDENT PROJECTS -->
+        <div class="section" onclick="toggleSubsections('student-projects')">
+            <h1>STUDENT PROJECTS</h1>
+        </div>
+        <div id="student-projects" class="subsection">
+            <h2>Subsekcija 1</h2>
+            <a href="https://github.com/your-repo/project1.pdf" class="link">Tekst 1</a>
+            <a href="https://github.com/your-repo/project2.pdf" class="link">Tekst 2</a>
+            <a href="https://github.com/your-repo/project3.pdf" class="link">Tekst 3</a>
+
+            <h2>Subsekcija 2</h2>
+            <a href="https://github.com/your-repo/project4.pdf" class="link">Tekst 4</a>
+            <a href="https://github.com/your-repo/project5.pdf" class="link">Tekst 5</a>
+
+            <h2>Subsekcija 3</h2>
+            <a href="https://github.com/your-repo/project6.pdf" class="link">Tekst 6</a>
+
+            <h2>Subsekcija 4</h2>
+            <a href="https://github.com/your-repo/project7.pdf" class="link">Tekst 7</a>
+            <a href="https://github.com/your-repo/project8.pdf" class="link">Tekst 8</a>
+        </div>
+
+        <!-- INDIVIDUAL WORK -->
+        <div class="section" onclick="toggleSubsections('individual-work')">
+            <h1>INDIVIDUAL WORK</h1>
+        </div>
+        <div id="individual-work" class="subsection">
+            <h2>Subsekcija 5</h2>
+            <a href="https://github.com/your-repo/individual_project1.pdf" class="link">Tekst 1</a>
+            <a href="https://github.com/your-repo/individual_project2.pdf" class="link">Tekst 2</a>
+            <h2>Subsekcija 6</h2>
+            <a href="https://github.com/your-repo/individual_project3.pdf" class="link">Tekst 3</a>
+        </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="contact-container">
+        <div class="contact" onclick="toggleContactDetails('contact-details')">
+            <h1>CONTACT</h1>
+        </div>
+        <div id="contact-details" style="display: none;">
+            <p><a href="mailto:nklatm@gmail.com" class="link">nklatm@gmail.com</a></p>
+            <p>(+381) 66 03 06 46</p>
+        </div>
+    </div>
+
+    <script>
+        // Funkcija za prikaz trenutnog vremena u Beogradu
+        function updateTime() {
+            var date = new Date();
+            var options = {
+                timeZone: "Europe/Belgrade",
+                hour12: false,
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            };
+            var timeString = date.toLocaleTimeString("sr-RS", options);
+            document.getElementById("time").textContent = timeString; // Samo vreme
+        }
+
+        // Osvežavanje vremena svakih sekundu
+        setInterval(updateTime, 1000);
+
+        // Funkcija za prebacivanje između svetlog i tamnog moda
+        document.getElementById("theme-toggle").onclick = function() {
+            document.body.classList.toggle("dark-mode");
+            if (document.body.classList.contains("dark-mode")) {
+                document.getElementById("theme-toggle").innerHTML = "&#9898;"; // Beli krug za tamni režim
+            } else {
+                document.getElementById("theme-toggle").innerHTML = "&#9899;"; // Crni krug za svetli režim
+            }
+        };
+
+        function toggleSubsections(sectionId) {
+            const subsections = document.getElementById(sectionId);
+            if (subsections.style.display === "none" || subsections.style.display === "") {
+                subsections.style.display = "block";
+            } else {
+                subsections.style.display = "none";
+            }
+        }
+
+        function toggleContactDetails(contactId) {
+            const contactDetails = document.getElementById(contactId);
+            if (contactDetails.style.display === "none" || contactDetails.style.display === "") {
+                contactDetails.style.display = "block";
+            } else {
+                contactDetails.style.display = "none";
+            }
+        }
+
+        // Pozivanje funkcije da bi vreme bilo odmah prikazano
+        updateTime();
+    </script>
+</body>
+</html>
