@@ -9,88 +9,92 @@
             font-family: "Courier New", Courier, monospace;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Sprečava scrollanje */
-            height: 100vh; /* Postavlja visinu stranice na visinu ekrana */
-            transition: background-color 0.3s, color 0.3s; /* Glatka promena boje */
+            overflow: hidden;
+            height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        /* Default boje za svetli režim */
         body:not(.dark-mode) {
             background-color: white;
-            color: black; /* Crna boja za tekst u svetlom režimu */
+            color: black;
         }
 
-        /* Dark Mode */
         body.dark-mode {
             background-color: #121212;
-            color: white; /* Bela boja za tekst u tamnom režimu */
+            color: white;
         }
 
-        /* Vreme */
         .time {
             position: absolute;
             top: 10px;
             left: 10px;
-            font-size: 16px; /* Povećan font za vreme */
-            color: inherit; /* Nasleđuje boju od tela, u svetlom režimu crno, u tamnom belo */
+            font-size: 16px;
+            color: inherit;
         }
 
-        /* Ikona za prebacivanje teme */
         .theme-toggle {
             position: absolute;
             top: 10px;
-            right: 10px;
+            left: 50%;
+            transform: translateX(-50%);
             font-size: 24px;
             cursor: pointer;
-            transition: transform 0.3s;
         }
-        .theme-toggle:hover {
-            transform: scale(1.2);
+
+        .language-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            color: inherit;
         }
 
         .container {
             padding: 20px;
-            margin-left: 20px; /* Pomera sekcije ulevo */
+            margin-left: 20px;
             float: left;
-            width: 75%; /* Prostor za levu sekciju */
-            margin-top: 30px; /* Razmak od vremena */
+            width: 70%;
+            margin-top: 30px;
         }
 
         .contact-container {
-            float: left; /* Premesteno na levu stranu */
-            width: 20%; /* Prostor za desnu sekciju */
+            float: left;
+            width: 25%;
             padding: 20px;
             position: absolute;
-            bottom: 20px; /* Premesteno ispod sekcija */
+            bottom: 20px;
             left: 20px;
-        }
-
-        h1, h2 {
-            color: inherit; /* Nasleđuje boju od tela, crno za svetli, belo za tamni režim */
         }
 
         .section {
             margin-bottom: 20px;
-            text-align: left; /* Sekcije levo poravnate */
             cursor: pointer;
-            font-size: 12px; /* Smanjen font za naslove sekcija */
+            font-size: 12px;
         }
 
         .subsection {
             margin-left: 20px;
-            text-transform: uppercase; /* CAPSLOCK */
-            font-weight: normal; /* Isključivanje bolda */
-            display: none; /* Početno sakrivanje subsekcija */
-            font-size: 14px; /* Font za subsekcije */
-            color: inherit; /* Nasleđuje boju od tela, crno za svetli, belo za tamni režim */
+            display: none;
+            text-transform: uppercase;
+            font-weight: normal;
+            font-size: 14px;
+            color: inherit;
+        }
+
+        .sub-link {
+            margin-left: 40px;
+            display: none;
+            font-size: 14px;
+            color: inherit;
         }
 
         .link {
-            color: inherit; /* Nasleđuje boju od tela */
+            color: inherit;
             text-decoration: none;
             display: block;
             margin: 5px 0;
-            font-size: 16px; /* Font za linkove unutar subsekcija */
+            font-size: 16px;
         }
 
         .link:hover {
@@ -98,89 +102,142 @@
         }
 
         .contact {
-            font-size: 12px; /* Font za CONTACT sekciju */
+            font-size: 12px;
             cursor: pointer;
             text-align: left;
         }
 
         .contact a {
-            color: inherit; /* Nasleđuje boju od tela */
+            color: inherit;
             text-decoration: none;
-            font-size: 16px; /* Font za email link */
+            font-size: 12px;
         }
 
         .contact a:hover {
             color: #555;
         }
 
-        /* Crni i beli krug za ikonu teme */
-        .theme-toggle.light-mode {
-            color: black;
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 16px;
+            padding: 10px 0;
+            color: inherit;
         }
 
-        .theme-toggle.dark-mode {
-            color: white;
+        /* Responsive styling */
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .contact-container {
+                width: 100%;
+                position: relative;
+                bottom: initial;
+                left: initial;
+            }
+
+            .time,
+            .theme-toggle,
+            .language-toggle {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Vreme -->
     <div class="time" id="time"></div>
-
-    <!-- Dark/Light Mode Switch (Ikona) -->
-    <div class="theme-toggle" id="theme-toggle">&#9899;</div> <!-- Crni krug za svetli režim -->
+    <div class="language-toggle">
+        <span id="lang-en" onclick="switchLanguage('en')">EN</span>
+        <span id="lang-fr" onclick="switchLanguage('fr')">FR</span>
+        <span id="lang-sr" onclick="switchLanguage('sr')">SR</span>
+    </div>
+    <div class="theme-toggle" id="theme-toggle">⚫</div>
 
     <div class="container">
-        <!-- STUDENT PROJECTS -->
-        <div class="section" onclick="toggleSubsections('student-projects')">
-            <h1>STUDENT PROJECTS</h1>
-        </div>
-        <div id="student-projects" class="subsection">
-            <h2>Outdoor spaces design</h2>
-            <a href="https://i.giphy.com/Ypqjp9B80WTWea7wR0.webp" class="link" target="_blank" rel="noopener noreferrer">IN PROGRESS 1</a>
-            <a href="https://i.giphy.com/Ypqjp9B80WTWea7wR0.webp" class="link" target="_blank" rel="noopener noreferrer">IN PROGRESS 2</a>
-            <a href="https://i.giphy.com/Ypqjp9B80WTWea7wR0.webp" class="link" target="_blank" rel="noopener noreferrer">IN PROGRESS 3</a>
+        <div class="two-column">
 
-            <h2>Plant arrangement</h2>
-            <a href="https://i.giphy.com/Ypqjp9B80WTWea7wR0.webp" class="link" target="_blank" rel="noopener noreferrer">IN PROGRESS 4</a>
-            <a href="https://i.giphy.com/Ypqjp9B80WTWea7wR0.webp" class="link" target="_blank" rel="noopener noreferrer">IN PROGRESS 5</a>
+            <!-- Student Projects Section -->
+            <div>
+                <div class="section" onclick="toggleSubsections('student-projects')">
+                    <h1 data-content-en="STUDENT PROJECTS" data-content-fr="PROJETS ÉTUDIANTS" data-content-sr="СТУДЕНТСКИ ПРОЈЕКТИ">STUDENT PROJECTS</h1>
+                </div>
+                <div id="student-projects" class="subsection">
+                    <h2 onclick="toggleLinks('outdoor-spaces', 'student-projects')" style="cursor: pointer;" data-content-en="Outdoor spaces design" data-content-fr="Conception d'espaces extérieurs" data-content-sr="Пројектовање отворених простора">Outdoor spaces design</h2>
+                    <div id="outdoor-spaces" class="sub-link">
+                        <a href="https://drive.google.com/file/d/1_VW808zgMHmj83EvNEJcJw3CWdWWTs52/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Rooftop garden (2023)" data-content-fr="Jardin sur le toit (2023)" data-content-sr="Кровни врт (2023)">Rooftop garden (2023)</a>
+                        <a href="https://drive.google.com/file/d/1kRyTtuCnSri8Ai_VtdpbbtdEGlkEytW7/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="City square & pedestrian zone (2022)" data-content-fr="Place de la ville et zone piétonne (2022)" data-content-sr="Градски трг и пешачка зона (2022)">City square & pedestrian zone (2022)</a>
+                        <a href="https://drive.google.com/file/d/1BNs01tPrQ2kEX3vGizv7sNCmx7j_xkMA/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Local park (2021)" data-content-fr="Parc de quartier (2021)" data-content-sr="Локални парк (2021)">Local park (2021)</a>
+                        <a href="https://drive.google.com/file/d/1aA6M2wGj9zs5jPaPWStzTuHSHdxEByXV/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Residential block (2021)" data-content-fr="Immeuble résidentiel (2021)" data-content-sr="Стамбени блок (2021)">Residential block (2021)</a>
+                        <a href="https://drive.google.com/file/d/1DKlbZmS8ZjTAAzBlWVxW-wSJjy9tuvih/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Atrium (2020)" data-content-fr="Atrium (2020)" data-content-sr="Атријум (2020)">Atrium (2020)</a>
+                        <a href="https://drive.google.com/file/d/1ReDQeY0v5JucFPYoPRsBj3F1P9fKkw0H/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Basic elements (2019)" data-content-fr="Éléments de base (2019)" data-content-sr="Основни елементи (2019)">Basic elements (2019)</a>
+                    </div>
 
-            <h2>Park & lawn Reconstruction</h2>
-            <a href="https://i.giphy.com/Ypqjp9B80WTWea7wR0.webp" class="link" target="_blank" rel="noopener noreferrer">IN PROGRESS 6</a>
+                    <h2 onclick="toggleLinks('plant-arrangement', 'student-projects')" style="cursor: pointer;" data-content-en="Plant arrangement" data-content-fr="Disposition des plantes" data-content-sr="Распоред биљака">Plant arrangement</h2>
+                    <div id="plant-arrangement" class="sub-link">
+                        <a href="https://drive.google.com/file/d/1WqpmbFV0pZj66ZgAa-3RV0Q98d7RlOr-/view?usp=sharing" class="link" target="_blank" rel="noopener noreferrer" data-content-en="In the interior (2024)" data-content-fr="Dans l'intérieur (2024)" data-content-sr="У ентеријеру (2024)">In the interior (2024)</a>
+                        <a href="https://drive.google.com/file/d/1qHZ0Exh5NnZZQkQS-To3UnVYfWsfvnF2/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="In the garden (2023)" data-content-fr="Dans le jardin (2023)" data-content-sr="У врту (2023)">In the garden (2023)</a>
+                    </div>
 
-            <h2>Seminar papers</h2>
-            <a href="https://i.giphy.com/Ypqjp9B80WTWea7wR0.webp" class="link" target="_blank" rel="noopener noreferrer">IN PROGRESS 7</a>
-            <a href="https://i.giphy.com/Ypqjp9B80WTWea7wR0.webp" class="link" target="_blank" rel="noopener noreferrer">IN PROGRESS 8</a>
-        </div>
+                    <h2 onclick="toggleLinks('park-lawns', 'student-projects')" style="cursor: pointer;" data-content-en="Park & lawn Reconstruction" data-content-fr="Reconstruction des parcs et pelouses" data-content-sr="Реконструкција паркова и травњака">Park & lawn Reconstruction</h2>
+                    <div id="park-lawns" class="sub-link">
+                        <a href="https://drive.google.com/file/d/14x8LpUY9H8nkI2g-cVbkr2dXbxhOQxYI/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Lawn (2024)" data-content-fr="La pelouse (2024)" data-content-sr="Травњак (2024)">Lawn (2024)</a>
+                        <a href="https://drive.google.com/file/d/1XmurqSfQpf_02y8jer2tE92uf1TZwD8I/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Local park (2024)" data-content-fr="Parc local (2024)" data-content-sr="Локални парк (2024)">Local park (2024)</a>
+                        <a href="https://drive.google.com/file/d/1wWktjcqL3c_jGDFPD_zRTdAGqKcuF9SR/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="City park (2024)" data-content-fr="Parc de la ville (2024)" data-content-sr="Градски парк (2024)">City park (2024)</a>
+                        <a href="https://drive.google.com/file/d/14Ilx6XkcFOF7xisfgnA23uT58Eg-lhAx/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Eco park (2019)" data-content-fr="Parc écologique (2019)" data-content-sr="Еколошки парк (2019)">Eco park (2019)</a>
+                    </div>
 
-        <!-- INDIVIDUAL WORK -->
-        <div class="section" onclick="toggleSubsections('individual-work')">
-            <h1>INDIVIDUAL WORK</h1>
-        </div>
-        <div id="individual-work" class="subsection">
-            <h2>Private gardens</h2>
-            <a href="https://i.giphy.com/Ypqjp9B80WTWea7wR0.webp" class="link" target="_blank" rel="noopener noreferrer">IN PROGRESS 9</a>
-            <a href="https://i.giphy.com/Ypqjp9B80WTWea7wR0.webp" class="link" target="_blank" rel="noopener noreferrer">IN PROGRESS 10</a>
-            <h2>Logo design</h2>
-            <a href="https://drive.google.com/file/d/1cOnLOmLiWhk3ln8LXr2l3uSbOgFidpSR/view?usp=sharing" class="link" target="_blank" rel="noopener noreferrer">MUZEION (2024)</a>
-            <a href="https://drive.google.com/file/d/1Yt_TJ6nw8sYtzzv3Yr8Ht2CVFzzYiqo0/view?usp=sharing" class="link" target="_blank" rel="noopener noreferrer">Young Neurologists Tournament (2024)</a>
-            <a href="https://drive.google.com/file/d/1XfKo3qAIyvs2c-fCTXAF7SitgnMgeZ8_/view?usp=sharing" class="link" target="_blank" rel="noopener noreferrer">Sava Rakija (2024)</a>
+                    <h2 onclick="toggleLinks('seminar-papers', 'student-projects')" style="cursor: pointer;" data-content-en="Seminar papers" data-content-fr="Papiers de séminaire" data-content-sr="Семинарски радови">Seminar papers</h2>
+                    <div id="seminar-papers" class="sub-link">
+                        <a href="https://www.google.uk" class="link" target="_blank" rel="noopener noreferrer" data-content-en="IN PROGRESS 7" data-content-fr="EN COURS 7" data-content-sr="U PROGRESU 7">IN PROGRESS 7</a>
+                        <a href="https://www.google.uk" class="link" target="_blank" rel="noopener noreferrer" data-content-en="IN PROGRESS 8" data-content-fr="EN COURS 8" data-content-sr="U PROGRESU 8">IN PROGRESS 8</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Individual Work Section -->
+            <div>
+                <div class="section" onclick="toggleSubsections('individual-work')">
+                    <h1 data-content-en="INDIVIDUAL WORK" data-content-fr="TRAVAIL INDIVIDUEL" data-content-sr="ИНДИВИДУАЛНИ РАД">INDIVIDUAL WORK</h1>
+                </div>
+                <div id="individual-work" class="subsection">
+                    <h2 onclick="toggleLinks('private-gardens', 'individual-work')" style="cursor: pointer;" data-content-en="Private gardens" data-content-fr="Jardins privés" data-content-sr="Приватни вртови">Private gardens</h2>
+                    <div id="private-gardens" class="sub-link">
+                        <a href="https://www.google.uk" class="link" target="_blank" rel="noopener noreferrer" data-content-en="IN PROGRESS 9" data-content-fr="EN COURS 9" data-content-sr="U PROGRESU 9">IN PROGRESS 9</a>
+                        <a href="https://www.google.uk" class="link" target="_blank" rel="noopener noreferrer" data-content-en="IN PROGRESS 10" data-content-fr="EN COURS 10" data-content-sr="U PROGRESU 10">IN PROGRESS 10</a>
+                    </div>
+
+                    <h2 onclick="toggleLinks('logo-design', 'individual-work')" style="cursor: pointer;" data-content-en="Logo design" data-content-fr="Conception de logo" data-content-sr="Дизајн логотипа">Logo design</h2>
+                    <div id="logo-design" class="sub-link">
+                        <a href="https://www.google.uk" class="link" target="_blank" rel="noopener noreferrer" data-content-en="MUZEION (2024)" data-content-fr="MUZEION (2024)" data-content-sr="MUZEION (2024)">MUZEION (2024)</a>
+                        <a href="https://drive.google.com/file/d/1Yt_TJ6nw8sYtzzv3Yr8Ht2CVFzzYiqo0/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Young Neurologists Tournament (2024)" data-content-fr="Tournoi des jeunes neurologues (2024)" data-content-sr="Турнир младих неуролога (2024)">Young Neurologists Tournament (2024)</a>
+                        <a href="https://drive.google.com/file/d/1XfKo3qAIyvs2c-fCTXAF7SitgnMgeZ8_/view?usp=sharing" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Sava Brandy (2024)" data-content-fr="Eau-de-vie Sava (2024)" data-content-sr="Сава Ракија (2024)">Sava Brandy (2024)</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- CONTACT -->
     <div class="contact-container">
         <div class="contact" onclick="toggleContactDetails('contact-details')">
-            <h1>CONTACT</h1>
+            <h1 data-content-en="CONTACT" data-content-fr="CONTACT" data-content-sr="КОНТАКТ">CONTACT</h1>
         </div>
         <div id="contact-details" style="display: none;">
-            <p><a href="mailto:nklatm@gmail.com" class="link">nklatm@gmail.com</a></p>
-            <p>(+381)66030646</p>
+            <p><a href="mailto:nklatm@gmail.com" class="link" data-content-en="nklatm@gmail.com" data-content-fr="nklatm@gmail.com" data-content-sr="nklatm@gmail.com">nklatm@gmail.com</a></p>
+            <p data-content-en="(+381)66030646" data-content-fr="(+381) 66 03 06 46" data-content-sr="(+381)66030646">(+381)66030646</p>
         </div>
     </div>
 
+    <footer>
+        © 2025 NIKOLA TOMIC
+    </footer>
+
     <script>
-        // Funkcija za prikaz trenutnog vremena u Beogradu
         function updateTime() {
             var date = new Date();
             var options = {
@@ -191,41 +248,63 @@
                 second: "2-digit"
             };
             var timeString = date.toLocaleTimeString("sr-RS", options);
-            document.getElementById("time").textContent = timeString; // Samo vreme
+            document.getElementById("time").textContent = timeString;
         }
 
-        // Osvežavanje vremena svakih sekundu
         setInterval(updateTime, 1000);
 
-        // Funkcija za prebacivanje između svetlog i tamnog moda
         document.getElementById("theme-toggle").onclick = function() {
-            document.body.classList.toggle("dark-mode");
-            if (document.body.classList.contains("dark-mode")) {
-                document.getElementById("theme-toggle").innerHTML = "&#9898;"; // Beli krug za tamni režim
-            } else {
-                document.getElementById("theme-toggle").innerHTML = "&#9899;"; // Crni krug za svetli režim
-            }
+            const body = document.body;
+            body.classList.toggle("dark-mode");
+            document.getElementById("theme-toggle").innerHTML = body.classList.contains("dark-mode") ? "⚪" : "⚫";
         };
 
+        function switchLanguage(lang) {
+            const elements = document.querySelectorAll('[data-content-' + lang + ']');
+            elements.forEach(element => {
+                const content = element.getAttribute('data-content-' + lang);
+                if (content) {
+                    element.textContent = content;
+                }
+            });
+
+            const links = document.querySelectorAll('.link');
+            links.forEach(link => {
+                const langHref = link.getAttribute('data-href-' + lang);
+                if (langHref) {
+                    link.setAttribute('href', langHref.replace(/^(https?:\/\/)?(www\.)?/i, 'https://m.$2')); // Change link to m. version
+                }
+            });
+        }
+
         function toggleSubsections(sectionId) {
-            const subsections = document.getElementById(sectionId);
-            if (subsections.style.display === "none" || subsections.style.display === "") {
-                subsections.style.display = "block";
-            } else {
-                subsections.style.display = "none";
-            }
+            const subsections = document.querySelectorAll('.subsection');
+            subsections.forEach(subsection => {
+                if (subsection.id !== sectionId) {
+                    subsection.style.display = "none";
+                }
+            });
+            const selectedSubsections = document.getElementById(sectionId);
+            selectedSubsections.style.display = selectedSubsections.style.display === "none" || selectedSubsections.style.display === "" ? "block" : "none";
+        }
+
+        function toggleLinks(linkId, parentID) {
+            const links = document.querySelectorAll('#' + parentID + ' .sub-link');
+            links.forEach(link => {
+                if (link.id !== linkId) {
+                    link.style.display = "none";
+                }
+            });
+            const selectedLink = document.getElementById(linkId);
+            selectedLink.style.display = selectedLink.style.display === "none" || selectedLink.style.display === "" ? "block" : "none";
         }
 
         function toggleContactDetails(contactId) {
             const contactDetails = document.getElementById(contactId);
-            if (contactDetails.style.display === "none" || contactDetails.style.display === "") {
-                contactDetails.style.display = "block";
-            } else {
-                contactDetails.style.display = "none";
-            }
+            contactDetails.style.display = contactDetails.style.display === "none" || contactDetails.style.display === "" ? "block" : "none";
         }
 
-        // Pozivanje funkcije da bi vreme bilo odmah prikazano
+        switchLanguage('en'); // Set language to English on page load
         updateTime();
     </script>
 </body>
