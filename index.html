@@ -3,294 +3,412 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NT</title>
+    <title>Portfolio - Inspired by Grok</title>
+    <link href="https://fonts.googleapis.com/css2?family=Regio+Mono&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: "Courier New", Courier, monospace;
+        * {
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            height: 100vh;
-            transition: background-color 0.3s, color 0.3s; /* Uklonjena animacija za opacity */
+            box-sizing: border-box;
+            font-family: 'Regio Mono', monospace;
         }
 
-        body:not(.dark-mode) {
-            background-color: white;
-            color: black;
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --header-bg: #ffffff;
+            --footer-bg: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-border: 1px solid rgba(0, 0, 0, 0.1);
+            --hover-color: #007aff;
+            --accent-color: #003087;
+            --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        body.dark-mode {
-            background-color: #000000;
-            color: white;
+        [data-theme="dark"] {
+            --bg-color: #000000;
+            --text-color: #e0e0e0;
+            --header-bg: #000000;
+            --footer-bg: #000000;
+            --card-bg: rgba(31, 31, 61, 0.9);
+            --card-border: 1px solid rgba(255, 255, 255, 0.1);
+            --hover-color: #00d4ff;
+            --accent-color: #00b7ff;
         }
 
-        .time {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 16px;
-            color: inherit;
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.8;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        .theme-toggle {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .language-toggle {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            color: inherit;
-        }
-
-        .container {
-            padding: 10px;
-            margin-left: 10px;
-            float: left;
+        header {
+            background: var(--header-bg);
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
             width: 100%;
-            margin-top: 20px;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
         }
 
-        .contact-container {
-            float: left;
-            width: 25%;
-            padding: 10px;
-            position: absolute;
-            bottom: 10px;
-            left: 20px;
+        .header-titles {
+            display: flex;
+            gap: 50px;
+        }
+
+        .header-titles h1 {
+            font-size: 28px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+
+        .header-titles h1:hover {
+            color: var(--hover-color);
+            transform: scale(1.05);
+        }
+
+        .language-options {
+            display: flex;
+            gap: 20px;
+        }
+
+        .language-options span {
+            font-size: 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: var(--transition);
+        }
+
+        .language-options span:hover {
+            color: var(--hover-color);
+            transform: translateY(-2px);
+        }
+
+        .content {
+            margin-top: 120px;
+            padding: 60px;
+            flex-grow: 1;
         }
 
         .section {
-            margin-bottom: 10px;
-            cursor: pointer;
-            font-size: 12px; /* Veličina fonta za sekcije postavljena na 12px */
-        }
-
-        .subsection {
-            margin-left: 10px;
-            display: none; /* Podsekcije su inicijalno skrivene */
-            text-transform: uppercase;
-            font-weight: normal;
-            font-size: 14px;
-            color: inherit;
-        }
-
-        .sub-link {
-            margin-left: 10px;
             display: none;
-            font-size: 14px;
-            color: inherit;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: var(--transition);
         }
 
-        .link {
-            color: inherit;
-            text-decoration: none;
-            display: block;
-            margin: 5px 0;
-            font-size: 16px;
+        .section.active {
+            display: grid;
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .link:hover {
-            color: #555;
-        }
-
-        .contact {
-            font-size: 12px; /* Veličina fonta za CONTACT sekciju postavljena na 12px */
+        .card {
+            background: var(--card-bg);
+            border: var(--card-border);
+            padding: 20px;
+            border-radius: 8px;
+            transition: var(--transition);
             cursor: pointer;
-            text-align: left;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .contact a {
-            color: inherit;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+
+        .links {
+            display: none;
+            margin-top: 10px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .card.active .links {
+            display: block;
+            opacity: 1;
+        }
+
+        .links a {
+            display: block;
+            font-size: 16px;
+            color: var(--text-color);
             text-decoration: none;
-            font-size: 12px; /* Veličina fonta za linkove u CONTACT sekciji postavljena na 12px */
+            margin: 8px 0;
+            transition: var(--transition);
         }
 
-        .contact a:hover {
-            color: #555;
+        .links a:hover {
+            color: var(--hover-color);
+            padding-left: 10px;
         }
 
         footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 12px; 
-            padding: 10px 0;
-            color: inherit;
+            background: var(--footer-bg);
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            transition: var(--transition);
+        }
+
+        #time {
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
+        #copyright {
+            font-size: 16px;
+        }
+
+        #theme-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            transition: var(--transition);
+        }
+
+        #theme-toggle:hover {
+            color: var(--hover-color);
+            transform: scale(1.1);
         }
     </style>
 </head>
 <body>
-    <div class="time" id="time"></div>
-    <div class="language-toggle">
-        <span id="lang-en" onclick="switchLanguage('en')">EN</span>
-        <span id="lang-fr" onclick="switchLanguage('fr')">FR</span>
-        <span id="lang-sr" onclick="switchLanguage('sr')">SR</span>
-    </div>
-    <div class="theme-toggle" id="theme-toggle">☀︎</div>
+    <header>
+        <div class="header-titles">
+            <h1 onclick="toggleSection('student')" data-translate="STUDENT PROJECTS">Student Projects</h1>
+            <h1 onclick="toggleSection('individual')" data-translate="INDIVIDUAL WORK">Individual Work</h1>
+        </div>
+        <div class="language-options">
+            <span onclick="changeLanguage('en')">EN</span>
+            <span onclick="changeLanguage('fr')">FR</span>
+            <span onclick="changeLanguage('sr')">SR</span>
+        </div>
+    </header>
 
-    <div class="container">
-        <div class="two-column">
-            <div>
-                <div class="section" onclick="toggleSubsections('student-projects')">
-                    <h1 data-content-en="STUDENT PROJECTS" data-content-fr="PROJETS ÉTUDIANTS" data-content-sr="СТУДЕНТСКИ ПРОЈЕКТИ">STUDENT PROJECTS</h1>
-                </div>
-                <div id="student-projects" class="subsection">
-                    <h2 onclick="toggleLinks('outdoor-spaces', 'student-projects')" style="cursor: pointer;" data-content-en="Outdoor spaces design" data-content-fr="Conception d'espaces extérieurs" data-content-sr="Пројектовање отворених простора">Outdoor spaces design</h2>
-                    <div id="outdoor-spaces" class="sub-link">
-                        <a href="https://drive.google.com/file/d/1_VW808zgMHmj83EvNEJcJw3CWdWWTs52/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Rooftop garden (2023)" data-content-fr="Jardin sur le toit (2023)" data-content-sr="Кровни врт (2023)" data-href-en="https://drive.google.com/file/d/1_VW808zgMHmj83EvNEJcJw3CWdWWTs52/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/19w-6CXj7s6iYPd6ML5sfnDaaggLjIfvP/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1gKrVhT6loR9q6Vr7AffcRVXAeFW0fgFY/view?usp=drive_link">Rooftop garden (2023)</a>
-                        <a href="https://drive.google.com/file/d/1kRyTtuCnSri8Ai_VtdpbbtdEGlkEytW7/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="City square & pedestrian zone (2022)" data-content-fr="Place de la ville et zone piétonne (2022)" data-content-sr="Градски трг и пешачка зона (2022)" data-href-en="https://drive.google.com/file/d/1kRyTtuCnSri8Ai_VtdpbbtdEGlkEytW7/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/1BGcD_b_oJxjpMlOEp4Q-tBdm3jEBQLE-/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1AwQ61VABDHKLeXrY5s1r4WkCrpSshjwZ/view?usp=drive_link">ICity square & pedestrian zone (2022)</a>
-                        <a href="https://drive.google.com/file/d/1BNs01tPrQ2kEX3vGizv7sNCmx7j_xkMA/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Local park (2021)" data-content-fr="Parc de quartier (2021)" data-content-sr="Локални парк (2021)" data-href-en="https://drive.google.com/file/d/1BNs01tPrQ2kEX3vGizv7sNCmx7j_xkMA/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/1YFDCWHT1xZhMbWizdrtD9pRLz2NLg5p-/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1Ai-uoXQdZdKkNyAGnFzQKwdmjeYXThFT/view?usp=drive_link">Local park (2021)</a>
-                        <a href="https://drive.google.com/file/d/1aA6M2wGj9zs5jPaPWStzTuHSHdxEByXV/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Residential block (2021)" data-content-fr="Immeuble résidentiel (2021)" data-content-sr="Стамбени блок (2021)" data-href-en="https://drive.google.com/file/d/1aA6M2wGj9zs5jPaPWStzTuHSHdxEByXV/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/16JpN-JGobw4xCj_e5UioNqDXERbDDxwB/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1s3M2ddOe_Q_sInpaVHfe4ncp9g7WC-DY/view?usp=drive_link">Residential block (2021)</a>
-                        <a href="https://drive.google.com/file/d/1DKlbZmS8ZjTAAzBlWVxW-wSJjy9tuvih/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Atrium (2020)" data-content-fr="Atrium (2020)" data-content-sr="Атријум (2020)" data-href-en="https://drive.google.com/file/d/1DKlbZmS8ZjTAAzBlWVxW-wSJjy9tuvih/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/1DYLByXPsD5iWpTbLT_1a7TwvmR4SytzJ/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/11W0pmsYvYe9Yz-wfI_xpb3DnTAwpxI14/view?usp=drive_link">Atrium (2020)</a>
-                        <a href="https://drive.google.com/file/d/1ReDQeY0v5JucFPYoPRsBj3F1P9fKkw0H/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Basic elements (2019)" data-content-fr="Éléments de base (2019)" data-content-sr="Основни елементи (2019)" data-href-en="https://drive.google.com/file/d/1ReDQeY0v5JucFPYoPRsBj3F1P9fKkw0H/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/1Ttj3ezDLlzJxVrQE0Ga5TMRot_mHtBUP/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1aAL0gBzlmK93Nh3DcOo2d3St_pEdLn-0/view?usp=drive_link">Basic elements (2019)</a>
-                    </div>
-
-                    <h2 onclick="toggleLinks('plant-arrangement', 'student-projects')" style="cursor: pointer;" data-content-en="Plant arrangement" data-content-fr="Disposition des plantes" data-content-sr="Распоред биљака">Plant arrangement</h2>
-                    <div id="plant-arrangement" class="sub-link">
-                        <a href="https://drive.google.com/file/d/1WqpmbFV0pZj66ZgAa-3RV0Q98d7RlOr-/view?usp=sharing" class="link" target="_blank" rel="noopener noreferrer" data-content-en="In the interior (2024)" data-content-fr="Dans l'intérieur (2024)" data-content-sr="У ентеријеру (2024)" data-href-en="https://drive.google.com/file/d/1WqpmbFV0pZj66ZgAa-3RV0Q98d7RlOr-/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/1_TynlW7eMRsaGHSBZ6AUox-2cK0Qp94I/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/13APWlttcWpLz94JCcnhj8e_MjKIW8jWw/view?usp=drive_link">In the interior (2024)</a>
-                        <a href="https://drive.google.com/file/d/1qHZ0Exh5NnZZQkQS-To3UnVYfWsfvnF2/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="In the garden (2023)" data-content-fr="Dans le jardin (2023)" data-content-sr="У врту (2023)" data-href-en="https://drive.google.com/file/d/1qHZ0Exh5NnZZQkQS-To3UnVYfWsfvnF2/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/1mB0BV2JYwo9kqQfgFz582Wt3Exc1wG6k/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1aki9QTgC7oOwj5PnupYf5uA821zBF_tx/view?usp=drive_link">In the garden (2023)</a>
-                    </div>
-
-                    <h2 onclick="toggleLinks('park-lawns', 'student-projects')" style="cursor: pointer;" data-content-en="Park & lawn Reconstruction" data-content-fr="Reconstruction des parcs et pelouses" data-content-sr="Реконструкција паркова и травњака">Park & lawn Reconstruction</h2>
-                    <div id="park-lawns" class="sub-link">
-                        <a href="https://drive.google.com/file/d/14x8LpUY9H8nkI2g-cVbkr2dXbxhOQxYI/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Lawn (2024)" data-content-fr="La pelouse (2024)" data-content-sr="Травњак (2024)" data-href-en="https://drive.google.com/file/d/14x8LpUY9H8nkI2g-cVbkr2dXbxhOQxYI/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/19ldspEWgm4p7zMnSlwh45df3KHbIkLBd/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1KBI3rHx_DndVqZishAButVRqoGg4I-ZQ/view?usp=drive_link">Lawn (2024)</a>
-                        <a href="https://drive.google.com/file/d/1XmurqSfQpf_02y8jer2tE92uf1TZwD8I/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Local park (2024)" data-content-fr="Parc local (2024)" data-content-sr="Локални парк (2024)" data-href-en="https://drive.google.com/file/d/1XmurqSfQpf_02y8jer2tE92uf1TZwD8I/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/1YxZ8ol3Uc1yX-EKqBKKB7_uH6xwcbF7G/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1LW682nfocSSdgkTJUkuvFDO__HkmedHZ/view?usp=drive_link">Local park (2024)</a>
-                        <a href="https://drive.google.com/file/d/1wWktjcqL3c_jGDFPD_zRTdAGqKcuF9SR/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="City park (2024)" data-content-fr="Parc de la ville (2024)" data-content-sr="Градски парк (2024)" data-href-en="https://drive.google.com/file/d/1wWktjcqL3c_jGDFPD_zRTdAGqKcuF9SR/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/1KmNnfz8baSHfAWxdvoth1_-eB-k6GqkW/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1-emv_2naMEIfXuQO5e78ukgVQoXqFAXK/view?usp=drive_link">City park (2024)</a>
-                        <a href="https://drive.google.com/file/d/14Ilx6XkcFOF7xisfgnA23uT58Eg-lhAx/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Eco park (2019)" data-content-fr="Parc écologique (2019)" data-content-sr="Еколошки парк (2019)" data-href-en="https://drive.google.com/file/d/14Ilx6XkcFOF7xisfgnA23uT58Eg-lhAx/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/1bfgpDHbVUa8voHio1PyGZGBG6p8l_ru4/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1GSdj-MUFwiZURj6rWwEIHpj5TdeQdWcc/view?usp=drive_link">Eco park (2019)</a>
-                    </div>
-
-                    <h2 onclick="toggleLinks('seminar-papers', 'student-projects')" style="cursor: pointer;" data-content-en="Seminar papers" data-content-fr="Papiers de séminaire" data-content-sr="Семинарски радови">Seminar papers</h2>
-                    <div id="seminar-papers" class="sub-link">
-                        <a href="https://drive.google.com/file/d/1dt2H-pE8bYhhcVvJmAzT_WyqsCSvrNLn/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Sustainable development (2024)" data-content-fr="Développement durable (2024)" data-content-sr="Одрживи развој (2024)" data-href-en="https://drive.google.com/file/d/1dt2H-pE8bYhhcVvJmAzT_WyqsCSvrNLn/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/1JQd16VwCdyZiNN6arnmkmx_ObWhyJrqS/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1Wsl4l_PKCP9Z52r-HP1K4TduSCgPo7dW/view?usp=drive_link">Sustainable development (2024)</a>
-                        <a href="https://drive.google.com/file/d/1dZODfOtv9TPhKKEcXD5MeqP2yU3NI_rx/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Cockchafers (2024)" data-content-fr="Les hannetons (2024)" data-content-sr="Гундељи (2024)" data-href-en="https://drive.google.com/file/d/1dZODfOtv9TPhKKEcXD5MeqP2yU3NI_rx/view?usp=sharing" data-href-fr="https://drive.google.com/file/d/1ZSsuasJFJPTt_8vw0YCwdS6mhL6v4aV9/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1iV2Aqd9e1g0z4OOYXahwkuu1TD6voNff/view?usp=drive_link">Cockchafers (2024)</a>
-                        <a href="https://drive.google.com/file/d/1Hpd2y2RVGaw3qTGwO_TTmVS0FTzm5azU/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Field teaching diary (2024)" data-content-fr="Journal de terrain (2024)" data-content-sr="Дневник теренске наставе (2024)" data-href-en="https://drive.google.com/file/d/1Hpd2y2RVGaw3qTGwO_TTmVS0FTzm5azU/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/14E7wJdUrtakiltLaQoxyqlMoBujjRfTR/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1Ksssjy8qedJPMSX85fN7aAuBvjqwJkuN/view?usp=drive_link">Field teaching diary (2024)</a>
-                        <a href="https://drive.google.com/file/d/1CCIU7FzQNXWkmx0te7SDnBDW2DJ3Kkd3/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Field teaching diary (2023)" data-content-fr="Journal de terrain (2023)" data-content-sr="Дневник теренске наставе (2023)" data-href-en="https://drive.google.com/file/d/1CCIU7FzQNXWkmx0te7SDnBDW2DJ3Kkd3/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/1YgPEQ8oU_bjIpHMgIEusw_l9fYKUsUlU/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/17kWKYLmNJVE7fVS0d7mDoke6PVCIndNQ/view?usp=drive_link">Field teaching diary (2023)</a>
-                    </div>
+    <div class="content">
+        <div class="section" id="student">
+            <div class="card" onclick="toggleLinks(this)">
+                <h3 data-translate="Project 1">Project 1</h3>
+                <div class="links">
+                    <a href="#" data-translate="Link 1">Link 1</a>
+                    <a href="#" data-translate="Link 2">Link 2</a>
+                    <a href="#" data-translate="Link 3">Link 3</a>
+                    <a href="#" data-translate="Link 4">Link 4</a>
                 </div>
             </div>
-
-            <div>
-                <div class="section" onclick="toggleSubsections('individual-work')">
-                    <h1 data-content-en="INDIVIDUAL WORK" data-content-fr="TRAVAIL INDIVIDUEL" data-content-sr="ИНДИВИДУАЛНИ РАД">INDIVIDUAL WORK</h1>
+            <div class="card" onclick="toggleLinks(this)">
+                <h3 data-translate="Project 2">Project 2</h3>
+                <div class="links">
+                    <a href="#" data-translate="Link 1">Link 1</a>
+                    <a href="#" data-translate="Link 2">Link 2</a>
+                    <a href="#" data-translate="Link 3">Link 3</a>
+                    <a href="#" data-translate="Link 4">Link 4</a>
                 </div>
-                <div id="individual-work" class="subsection">
-                    <h2 onclick="toggleLinks('private-gardens', 'individual-work')" style="cursor: pointer;" data-content-en="Private gardens" data-content-fr="Jardins privés" data-content-sr="Приватни вртови">Private gardens</h2>
-                    <div id="private-gardens" class="sub-link">
-                        <a data-content-en="THIS SECTION IS STILL UNDER DEVELOPMENT" data-content-fr="Cette section est encore en développement" data-content-sr="Овај одељак је још увек у изради">THIS SECTION IS STILL UNDER DEVELOPMENT</a>
-                    </div>
-
-                    <h2 onclick="toggleLinks('logo-design', 'individual-work')" style="cursor: pointer;" data-content-en="Logo design" data-content-fr="Conception de logo" data-content-sr="Дизајн логотипа">Logo design</h2>
-                    <div id="logo-design" class="sub-link">
-                        <a href="https://drive.google.com/file/d/1N3wwB-kTQ_DWNzlT6ZDFTXR0c3XjmsEz/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="MUZEION (2024)" data-content-fr="MUZEION (2024)" data-content-sr="МУЗЕИОН (2024)" data-href-en="https://drive.google.com/file/d/1N3wwB-kTQ_DWNzlT6ZDFTXR0c3XjmsEz/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/1lukm4aEJhO0ooZAE6yzmEAbplCdLCGEN/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1Ai6W-WjiP1zyOpNKGWQqRw6z5wFpTlkR/view?usp=drive_link">MUZEION (2024)</a>
-                        <a href="https://drive.google.com/file/d/1Yt_TJ6nw8sYtzzv3Yr8Ht2CVFzzYiqo0/view?usp=drive_link" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Young Neurologists Tournament (2024)" data-content-fr="Tournoi des jeunes neurologues (2024)" data-content-sr="Турнир младих неуролога (2024)" data-href-en="https://drive.google.com/file/d/1Yt_TJ6nw8sYtzzv3Yr8Ht2CVFzzYiqo0/view?usp=drive_link" data-href-fr="https://drive.google.com/file/d/1UTdJHf9XTv9n0ZHkcK0dBeSCpin1iirb/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1xjyTHc_NuiynqFhgiybszpvBBCvFPiS3/view?usp=drive_link">Young Neurologists Tournament (2024)</a>
-                        <a href="https://drive.google.com/file/d/1XfKo3qAIyvs2c-fCTXAF7SitgnMgeZ8_/view?usp=sharing" class="link" target="_blank" rel="noopener noreferrer" data-content-en="Sava Brandy (2024)" data-content-fr="Eau-de-vie Sava (2024)" data-content-sr="Сава Ракија (2024)" data-href-en="https://drive.google.com/file/d/1XfKo3qAIyvs2c-fCTXAF7SitgnMgeZ8_/view?usp=sharing" data-href-fr="https://drive.google.com/file/d/1E2MiRtCRIBkDWVJFy7XA2ZzTmEtHfECV/view?usp=drive_link" data-href-sr="https://drive.google.com/file/d/1xSHtos4rbOzb2Ri2bOCEtXd6mVuUaBfw/view?usp=drive_link">Sava Brandy (2024)</a>
-                    </div>
+            </div>
+            <div class="card" onclick="toggleLinks(this)">
+                <h3 data-translate="Project 3">Project 3</h3>
+                <div class="links">
+                    <a href="#" data-translate="Link 1">Link 1</a>
+                    <a href="#" data-translate="Link 2">Link 2</a>
+                    <a href="#" data-translate="Link 3">Link 3</a>
+                    <a href="#" data-translate="Link 4">Link 4</a>
+                </div>
+            </div>
+            <div class="card" onclick="toggleLinks(this)">
+                <h3 data-translate="Project 4">Project 4</h3>
+                <div class="links">
+                    <a href="#" data-translate="Link 1">Link 1</a>
+                    <a href="#" data-translate="Link 2">Link 2</a>
+                    <a href="#" data-translate="Link 3">Link 3</a>
+                    <a href="#" data-translate="Link 4">Link 4</a>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="contact-container">
-        <div class="contact" onclick="toggleContactDetails('contact-details')">
-            <h1 data-content-en="CONTACT" data-content-fr="CONTACT" data-content-sr="КОНТАКТ">CONTACT</h1>
-        </div>
-        <div id="contact-details" style="display: none;">
-            <p><a href="mailto:nklatm@gmail.com" class="link" data-content-en="nklatm@gmail.com" data-content-fr="nklatm@gmail.com" data-content-sr="nklatm@gmail.com">nklatm@gmail.com</a></p>
-            <p data-content-en="(+381)66030646" data-content-fr="(+381) 66 03 06 46" data-content-sr="(+381)66030646">(+381)66030646</p>
+        <div class="section" id="individual">
+            <div class="card" onclick="toggleLinks(this)">
+                <h3 data-translate="Work 1">Work 1</h3>
+                <div class="links">
+                    <a href="#" data-translate="Link 1">Link 1</a>
+                    <a href="#" data-translate="Link 2">Link 2</a>
+                    <a href="#" data-translate="Link 3">Link 3</a>
+                    <a href="#" data-translate="Link 4">Link 4</a>
+                </div>
+            </div>
+            <div class="card" onclick="toggleLinks(this)">
+                <h3 data-translate="Work 2">Work 2</h3>
+                <div class="links">
+                    <a href="#" data-translate="Link 1">Link 1</a>
+                    <a href="#" data-translate="Link 2">Link 2</a>
+                    <a href="#" data-translate="Link 3">Link 3</a>
+                    <a href="#" data-translate="Link 4">Link 4</a>
+                </div>
+            </div>
+            <div class="card" onclick="toggleLinks(this)">
+                <h3 data-translate="Work 3">Work 3</h3>
+                <div class="links">
+                    <a href="#" data-translate="Link 1">Link 1</a>
+                    <a href="#" data-translate="Link 2">Link 2</a>
+                    <a href="#" data-translate="Link 3">Link 3</a>
+                    <a href="#" data-translate="Link 4">Link 4</a>
+                </div>
+            </div>
+            <div class="card" onclick="toggleLinks(this)">
+                <h3 data-translate="Work 4">Work 4</h3>
+                <div class="links">
+                    <a href="#" data-translate="Link 1">Link 1</a>
+                    <a href="#" data-translate="Link 2">Link 2</a>
+                    <a href="#" data-translate="Link 3">Link 3</a>
+                    <a href="#" data-translate="Link 4">Link 4</a>
+                </div>
+            </div>
         </div>
     </div>
 
     <footer>
-        © 2025 NIKOLA TOMIC
+        <div id="time"></div>
+        <div id="copyright" data-translate="© 2025 Portfolio">© 2025 Portfolio</div>
+        <div id="theme-toggle" onclick="toggleTheme()">☀︎</div>
     </footer>
 
     <script>
+        // Real-time clock for Belgrade
         function updateTime() {
-            var date = new Date();
-            var options = {
+            const belgradeTime = new Date().toLocaleString("sr-RS", {
                 timeZone: "Europe/Belgrade",
-                hour12: false,
                 hour: "2-digit",
                 minute: "2-digit",
                 second: "2-digit"
-            };
-            var timeString = date.toLocaleTimeString("sr-RS", options);
-            document.getElementById("time").textContent = timeString;
+            });
+            document.getElementById("time").textContent = belgradeTime;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Toggle sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const allSections = document.querySelectorAll(".section");
+            allSections.forEach(s => {
+                if (s !== section) s.classList.remove("active");
+            });
+            section.classList.toggle("active");
         }
 
-        setInterval(updateTime, 1000);
+        // Toggle links (one card at a time)
+        function toggleLinks(card) {
+            const allCards = document.querySelectorAll(".card");
+            allCards.forEach(c => {
+                if (c !== card) c.classList.remove("active");
+            });
+            card.classList.toggle("active");
+        }
 
-        document.getElementById("theme-toggle").onclick = function() {
+        // Toggle dark/light mode with symbol
+        function toggleTheme() {
             const body = document.body;
-            body.classList.toggle("dark-mode");
-            if (body.classList.contains("dark-mode")) {
-                document.getElementById("theme-toggle").innerHTML = "◗";
+            const toggle = document.getElementById("theme-toggle");
+            if (body.getAttribute("data-theme") === "dark") {
+                body.removeAttribute("data-theme");
+                toggle.textContent = "☀︎";
             } else {
-                document.getElementById("theme-toggle").innerHTML = "☀︎";
+                body.setAttribute("data-theme", "dark");
+                toggle.textContent = "◗";
+            }
+        }
+
+        // Language translation
+        const translations = {
+            en: {
+                "STUDENT PROJECTS": "Student Projects",
+                "INDIVIDUAL WORK": "Individual Work",
+                "Project 1": "Project 1",
+                "Project 2": "Project 2",
+                "Project 3": "Project 3",
+                "Project 4": "Project 4",
+                "Work 1": "Work 1",
+                "Work 2": "Work 2",
+                "Work 3": "Work 3",
+                "Work 4": "Work 4",
+                "Link 1": "Link 1",
+                "Link 2": "Link 2",
+                "Link 3": "Link 3",
+                "Link 4": "Link 4",
+                "© 2025 Portfolio": "© 2025 Portfolio"
+            },
+            fr: {
+                "STUDENT PROJECTS": "Projets Étudiants",
+                "INDIVIDUAL WORK": "Travail Individuel",
+                "Project 1": "Projet 1",
+                "Project 2": "Projet 2",
+                "Project 3": "Projet 3",
+                "Project 4": "Projet 4",
+                "Work 1": "Travail 1",
+                "Work 2": "Travail 2",
+                "Work 3": "Travail 3",
+                "Work 4": "Travail 4",
+                "Link 1": "Lien 1",
+                "Link 2": "Lien 2",
+                "Link 3": "Lien 3",
+                "Link 4": "Lien 4",
+                "© 2025 Portfolio": "© 2025 Portefeuille"
+            },
+            sr: {
+                "STUDENT PROJECTS": "Studentski Projekti",
+                "INDIVIDUAL WORK": "Individualni Rad",
+                "Project 1": "Projekat 1",
+                "Project 2": "Projekat 2",
+                "Project 3": "Projekat 3",
+                "Project 4": "Projekat 4",
+                "Work 1": "Rad 1",
+                "Work 2": "Rad 2",
+                "Work 3": "Rad 3",
+                "Work 4": "Rad 4",
+                "Link 1": "Link 1",
+                "Link 2": "Link 2",
+                "Link 3": "Link 3",
+                "Link 4": "Link 4",
+                "© 2025 Portfolio": "© 2025 Portfolio"
             }
         };
 
-        function switchLanguage(lang) {
-            const elements = document.querySelectorAll('[data-content-' + lang + ']');
-            elements.forEach(element => {
-                const content = element.getAttribute('data-content-' + lang);
-                if (content) {
-                    element.textContent = content;
-                }
+        function changeLanguage(lang) {
+            document.querySelectorAll("[data-translate]").forEach(element => {
+                const key = element.getAttribute("data-translate");
+                element.textContent = translations[lang][key] || key;
             });
-
-            const links = document.querySelectorAll('.link');
-            links.forEach(link => {
-                const langHref = link.getAttribute('data-href-' + lang);
-                if (langHref) {
-                    link.setAttribute('href', langHref);
-                }
-            });
+            document.documentElement.lang = lang;
         }
 
-        function toggleSubsections(sectionId) {
-            const subsections = document.querySelectorAll('.subsection');
-            subsections.forEach(subsection => {
-                if (subsection.id !== sectionId) {
-                    subsection.style.display = "none";
-                }
-            });
-            const selectedSubsections = document.getElementById(sectionId);
-            selectedSubsections.style.display = selectedSubsections.style.display === "none" || selectedSubsections.style.display === "" ? "block" : "none";
-        }
-
-        function toggleLinks(linkId, parentID) {
-            const links = document.querySelectorAll('#' + parentID + ' .sub-link');
-            links.forEach(link => {
-                if (link.id !== linkId) {
-                    link.style.display = "none";
-                }
-            });
-            const selectedLink = document.getElementById(linkId);
-            selectedLink.style.display = selectedLink.style.display === "none" || selectedLink.style.display === "" ? "block" : "none";
-        }
-
-        function toggleContactDetails(contactId) {
-            const contactDetails = document.getElementById(contactId);
-            if (contactDetails.style.display === "none" || contactDetails.style.display === "") {
-                contactDetails.style.display = "block";
-            } else {
-                contactDetails.style.display = "none";
-            }
-        }
-
-        switchLanguage('en'); // Postavljanje jezika na engleski prilikom učitavanja stranice
-        updateTime();
+        // Set initial language to Serbian
+        changeLanguage('sr');
     </script>
 </body>
 </html>
