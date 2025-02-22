@@ -1,414 +1,436 @@
 <!DOCTYPE html>
-<html lang="sr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio - Inspired by Grok</title>
-    <link href="https://fonts.googleapis.com/css2?family=Regio+Mono&display=swap" rel="stylesheet">
+    <title>Portfolio</title>
+    <link href="https://fonts.cdnfonts.com/css/sf-pro-display" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Regio Mono', monospace;
-        }
-
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #1a1a1a;
-            --header-bg: #ffffff;
-            --footer-bg: #ffffff;
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --card-border: 1px solid rgba(0, 0, 0, 0.1);
-            --hover-color: #007aff;
-            --accent-color: #003087;
-            --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        [data-theme="dark"] {
-            --bg-color: #000000;
-            --text-color: #e0e0e0;
-            --header-bg: #000000;
-            --footer-bg: #000000;
-            --card-bg: rgba(31, 31, 61, 0.9);
-            --card-border: 1px solid rgba(255, 255, 255, 0.1);
-            --hover-color: #00d4ff;
-            --accent-color: #00b7ff;
+            font-family: 'SF Pro Display', sans-serif;
         }
 
         body {
-            background: var(--bg-color);
-            color: var(--text-color);
-            transition: var(--transition);
-            line-height: 1.8;
-            overflow-x: hidden;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        header {
-            background: var(--header-bg);
-            padding: 30px 60px;
+            background: #fff;
+            color: #000;
+            transition: all 0.3s ease;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        body.dark {
+            background: #000;
+            color: #fff;
+        }
+
+        header {
             position: fixed;
-            width: 100%;
             top: 0;
-            z-index: 1000;
-            transition: var(--transition);
-        }
-
-        .header-titles {
+            left: 0;
+            right: 0;
             display: flex;
-            gap: 50px;
+            justify-content: space-between;
+            padding: 20px;
+            background: #fff;
+            z-index: 10;
+            transition: background 0.3s ease;
         }
 
-        .header-titles h1 {
-            font-size: 28px;
+        body.dark header {
+            background: #000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
             cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: var(--transition);
         }
 
-        .header-titles h1:hover {
-            color: var(--hover-color);
-            transform: scale(1.05);
-        }
-
-        .language-options {
+        nav {
             display: flex;
             gap: 20px;
         }
 
-        .language-options span {
-            font-size: 20px;
+        button, select {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            background: none;
             cursor: pointer;
-            text-transform: uppercase;
-            transition: var(--transition);
+            color: #000;
+            transition: color 0.3s ease;
         }
 
-        .language-options span:hover {
-            color: var(--hover-color);
-            transform: translateY(-2px);
+        body.dark button {
+            color: #fff;
         }
 
-        .content {
-            margin-top: 120px;
-            padding: 60px;
-            flex-grow: 1;
+        body.dark select {
+            color: #fff;
+            background: #000; /* Crna pozadina za padajući meni u dark modu */
         }
 
-        .section {
+        main {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+        }
+
+        .projects {
+            text-align: left;
+        }
+
+        .category {
+            margin-bottom: 20px;
+            cursor: pointer;
+            font-size: 24px;
+            transition: color 0.3s ease;
+        }
+
+        .category:hover {
+            color: #007aff;
+        }
+
+        .subcategories {
             display: none;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            margin-left: 20px;
             opacity: 0;
-            transform: translateY(50px);
-            transition: var(--transition);
+            transform: translateY(10px);
+            transition: all 0.3s ease;
         }
 
-        .section.active {
-            display: grid;
+        .subcategories.active {
+            display: block;
             opacity: 1;
             transform: translateY(0);
         }
 
-        .card {
-            background: var(--card-bg);
-            border: var(--card-border);
-            padding: 20px;
-            border-radius: 8px;
-            transition: var(--transition);
+        .subcategory {
+            margin: 10px 0;
             cursor: pointer;
-            min-height: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            transition: color 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        .subcategory:hover {
+            color: #007aff;
         }
 
-        .card h3 {
-            font-size: 18px;
-            color: var(--accent-color);
-            margin-bottom: 10px;
-            transition: var(--transition);
-        }
-
-        .links {
-            display: none;
-            margin-top: 10px;
+        #content {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
             opacity: 0;
-            transition: var(--transition);
+            pointer-events: none; /* Onemogućava klikove kada je skriveno */
+            transition: opacity 0.3s ease;
         }
 
-        .card.active .links {
-            display: block;
+        #content.active {
             opacity: 1;
+            pointer-events: auto; /* Omogućava klikove samo kada je vidljivo */
         }
 
-        .links a {
-            display: block;
-            font-size: 16px;
-            color: var(--text-color);
-            text-decoration: none;
-            margin: 8px 0;
-            transition: var(--transition);
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+            max-width: 800px;
         }
 
-        .links a:hover {
-            color: var(--hover-color);
-            padding-left: 10px;
+        .grid-item {
+            text-align: center;
+        }
+
+        .grid img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .grid img:hover {
+            transform: scale(1.05);
+        }
+
+        .grid-item p {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        #contact {
+            text-align: right;
+        }
+
+        h1 {
+            margin-bottom: 20px;
         }
 
         footer {
-            background: var(--footer-bg);
-            padding: 20px 60px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            transition: var(--transition);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            transition: background 0.3s ease;
         }
 
-        #time {
-            font-size: 16px;
-            letter-spacing: 1px;
+        body.dark footer {
+            background: #000;
         }
 
-        #copyright {
-            font-size: 16px;
-        }
-
-        #theme-toggle {
-            font-size: 24px;
-            cursor: pointer;
-            padding: 8px;
-            transition: var(--transition);
-        }
-
-        #theme-toggle:hover {
-            color: var(--hover-color);
-            transform: scale(1.1);
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="header-titles">
-            <h1 onclick="toggleSection('student')" data-translate="STUDENT PROJECTS">Student Projects</h1>
-            <h1 onclick="toggleSection('individual')" data-translate="INDIVIDUAL WORK">Individual Work</h1>
-        </div>
-        <div class="language-options">
-            <span onclick="changeLanguage('en')">EN</span>
-            <span onclick="changeLanguage('fr')">FR</span>
-            <span onclick="changeLanguage('sr')">SR</span>
-        </div>
+        <div class="logo">Portfolio</div>
+        <nav>
+            <button id="theme-toggle">☀︎</button>
+            <select id="language">
+                <option value="en">English</option>
+                <option value="sr">Srpski</option>
+                <option value="fr">Français</option>
+            </select>
+        </nav>
     </header>
 
-    <div class="content">
-        <div class="section" id="student">
-            <div class="card" onclick="toggleLinks(this)">
-                <h3 data-translate="Project 1">Project 1</h3>
-                <div class="links">
-                    <a href="#" data-translate="Link 1">Link 1</a>
-                    <a href="#" data-translate="Link 2">Link 2</a>
-                    <a href="#" data-translate="Link 3">Link 3</a>
-                    <a href="#" data-translate="Link 4">Link 4</a>
-                </div>
+    <main>
+        <section class="projects">
+            <div class="category" data-target="individual-works">Individual Works</div>
+            <div id="individual-works" class="subcategories">
+                <div class="subcategory" data-sub="Subcategory 1">Subcategory 1</div>
+                <div class="subcategory" data-sub="Subcategory 2">Subcategory 2</div>
+                <div class="subcategory" data-sub="Subcategory 3">Subcategory 3</div>
+                <div class="subcategory" data-sub="Subcategory 4">Subcategory 4</div>
             </div>
-            <div class="card" onclick="toggleLinks(this)">
-                <h3 data-translate="Project 2">Project 2</h3>
-                <div class="links">
-                    <a href="#" data-translate="Link 1">Link 1</a>
-                    <a href="#" data-translate="Link 2">Link 2</a>
-                    <a href="#" data-translate="Link 3">Link 3</a>
-                    <a href="#" data-translate="Link 4">Link 4</a>
-                </div>
+            <div class="category" data-target="individual-works-2">Individual Works 2</div>
+            <div id="individual-works-2" class="subcategories">
+                <div class="subcategory" data-sub="Subcategory 5">Subcategory 5</div>
+                <div class="subcategory" data-sub="Subcategory 6">Subcategory 6</div>
+                <div class="subcategory" data-sub="Subcategory 7">Subcategory 7</div>
+                <div class="subcategory" data-sub="Subcategory 8">Subcategory 8</div>
             </div>
-            <div class="card" onclick="toggleLinks(this)">
-                <h3 data-translate="Project 3">Project 3</h3>
-                <div class="links">
-                    <a href="#" data-translate="Link 1">Link 1</a>
-                    <a href="#" data-translate="Link 2">Link 2</a>
-                    <a href="#" data-translate="Link 3">Link 3</a>
-                    <a href="#" data-translate="Link 4">Link 4</a>
-                </div>
-            </div>
-            <div class="card" onclick="toggleLinks(this)">
-                <h3 data-translate="Project 4">Project 4</h3>
-                <div class="links">
-                    <a href="#" data-translate="Link 1">Link 1</a>
-                    <a href="#" data-translate="Link 2">Link 2</a>
-                    <a href="#" data-translate="Link 3">Link 3</a>
-                    <a href="#" data-translate="Link 4">Link 4</a>
-                </div>
-            </div>
-        </div>
+        </section>
 
-        <div class="section" id="individual">
-            <div class="card" onclick="toggleLinks(this)">
-                <h3 data-translate="Work 1">Work 1</h3>
-                <div class="links">
-                    <a href="#" data-translate="Link 1">Link 1</a>
-                    <a href="#" data-translate="Link 2">Link 2</a>
-                    <a href="#" data-translate="Link 3">Link 3</a>
-                    <a href="#" data-translate="Link 4">Link 4</a>
-                </div>
+        <section id="content">
+            <h1 id="content-title"></h1>
+            <div class="grid" id="content-grid"></div>
+        </section>
+
+        <section id="contact">
+            <div class="category" data-target="contact-details">Contact</div>
+            <div id="contact-details" class="subcategories">
+                <p id="email">Email: <a href="mailto:primer@email.com">primer@email.com</a></p>
+                <p id="phone">Phone: +381 123 456 789</p>
             </div>
-            <div class="card" onclick="toggleLinks(this)">
-                <h3 data-translate="Work 2">Work 2</h3>
-                <div class="links">
-                    <a href="#" data-translate="Link 1">Link 1</a>
-                    <a href="#" data-translate="Link 2">Link 2</a>
-                    <a href="#" data-translate="Link 3">Link 3</a>
-                    <a href="#" data-translate="Link 4">Link 4</a>
-                </div>
-            </div>
-            <div class="card" onclick="toggleLinks(this)">
-                <h3 data-translate="Work 3">Work 3</h3>
-                <div class="links">
-                    <a href="#" data-translate="Link 1">Link 1</a>
-                    <a href="#" data-translate="Link 2">Link 2</a>
-                    <a href="#" data-translate="Link 3">Link 3</a>
-                    <a href="#" data-translate="Link 4">Link 4</a>
-                </div>
-            </div>
-            <div class="card" onclick="toggleLinks(this)">
-                <h3 data-translate="Work 4">Work 4</h3>
-                <div class="links">
-                    <a href="#" data-translate="Link 1">Link 1</a>
-                    <a href="#" data-translate="Link 2">Link 2</a>
-                    <a href="#" data-translate="Link 3">Link 3</a>
-                    <a href="#" data-translate="Link 4">Link 4</a>
-                </div>
-            </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <footer>
-        <div id="time"></div>
-        <div id="copyright" data-translate="© 2025 Portfolio">© 2025 Portfolio</div>
-        <div id="theme-toggle" onclick="toggleTheme()">☀︎</div>
+        <p>© 2025 Portfolio</p>
     </footer>
 
     <script>
-        // Real-time clock for Belgrade
-        function updateTime() {
-            const belgradeTime = new Date().toLocaleString("sr-RS", {
-                timeZone: "Europe/Belgrade",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit"
-            });
-            document.getElementById("time").textContent = belgradeTime;
-        }
-        setInterval(updateTime, 1000);
-        updateTime();
+        // Refresh stranice na klik na logo
+        const logo = document.querySelector('.logo');
+        logo.addEventListener('click', () => {
+            window.location.reload();
+        });
 
-        // Toggle sections
-        function toggleSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            const allSections = document.querySelectorAll(".section");
-            allSections.forEach(s => {
-                if (s !== section) s.classList.remove("active");
-            });
-            section.classList.toggle("active");
-        }
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            themeToggle.textContent = document.body.classList.contains('dark') ? '◗' : '☀︎';
+            updateLanguage(languageSelect.value); // Osvežavanje teksta nakon promene moda
+        });
 
-        // Toggle links (one card at a time)
-        function toggleLinks(card) {
-            const allCards = document.querySelectorAll(".card");
-            allCards.forEach(c => {
-                if (c !== card) c.classList.remove("active");
-            });
-            card.classList.toggle("active");
-        }
+        // Promena jezika za sav tekst osim Portfolio i Copyright
+        const languageSelect = document.getElementById('language');
+        languageSelect.addEventListener('change', (e) => {
+            updateLanguage(e.target.value);
+        });
 
-        // Toggle dark/light mode with symbol
-        function toggleTheme() {
-            const body = document.body;
-            const toggle = document.getElementById("theme-toggle");
-            if (body.getAttribute("data-theme") === "dark") {
-                body.removeAttribute("data-theme");
-                toggle.textContent = "☀︎";
-            } else {
-                body.setAttribute("data-theme", "dark");
-                toggle.textContent = "◗";
+        function updateLanguage(lang) {
+            const individualTitle = document.querySelector('[data-target="individual-works"]');
+            const individualTitle2 = document.querySelector('[data-target="individual-works-2"]');
+            const contactTitle = document.querySelector('[data-target="contact-details"]');
+            const email = document.getElementById('email');
+            const phone = document.getElementById('phone');
+            const subs1 = document.querySelectorAll('#individual-works .subcategory');
+            const subs2 = document.querySelectorAll('#individual-works-2 .subcategory');
+
+            if (lang === 'sr') {
+                individualTitle.textContent = 'Individualni radovi';
+                individualTitle2.textContent = 'Individualni radovi 2';
+                contactTitle.textContent = 'Kontakt';
+                email.innerHTML = 'Email: <a href="mailto:primer@email.com">primer@email.com</a>';
+                phone.textContent = 'Telefon: +381 123 456 789';
+                subs1[0].textContent = 'Podkategorija 1';
+                subs1[1].textContent = 'Podkategorija 2';
+                subs1[2].textContent = 'Podkategorija 3';
+                subs1[3].textContent = 'Podkategorija 4';
+                subs2[0].textContent = 'Podkategorija 5';
+                subs2[1].textContent = 'Podkategorija 6';
+                subs2[2].textContent = 'Podkategorija 7';
+                subs2[3].textContent = 'Podkategorija 8';
+            } else if (lang === 'en') {
+                individualTitle.textContent = 'Individual Works';
+                individualTitle2.textContent = 'Individual Works 2';
+                contactTitle.textContent = 'Contact';
+                email.innerHTML = 'Email: <a href="mailto:primer@email.com">primer@email.com</a>';
+                phone.textContent = 'Phone: +381 123 456 789';
+                subs1[0].textContent = 'Subcategory 1';
+                subs1[1].textContent = 'Subcategory 2';
+                subs1[2].textContent = 'Subcategory 3';
+                subs1[3].textContent = 'Subcategory 4';
+                subs2[0].textContent = 'Subcategory 5';
+                subs2[1].textContent = 'Subcategory 6';
+                subs2[2].textContent = 'Subcategory 7';
+                subs2[3].textContent = 'Subcategory 8';
+            } else if (lang === 'fr') {
+                individualTitle.textContent = 'Travaux individuels';
+                individualTitle2.textContent = 'Travaux individuels 2';
+                contactTitle.textContent = 'Contact';
+                email.innerHTML = 'Email: <a href="mailto:primer@email.com">primer@email.com</a>';
+                phone.textContent = 'Téléphone: +381 123 456 789';
+                subs1[0].textContent = 'Sous-catégorie 1';
+                subs1[1].textContent = 'Sous-catégorie 2';
+                subs1[2].textContent = 'Sous-catégorie 3';
+                subs1[3].textContent = 'Sous-catégorie 4';
+                subs2[0].textContent = 'Sous-catégorie 5';
+                subs2[1].textContent = 'Sous-catégorie 6';
+                subs2[2].textContent = 'Sous-catégorie 7';
+                subs2[3].textContent = 'Sous-catégorie 8';
             }
         }
 
-        // Language translation
-        const translations = {
-            en: {
-                "STUDENT PROJECTS": "Student Projects",
-                "INDIVIDUAL WORK": "Individual Work",
-                "Project 1": "Project 1",
-                "Project 2": "Project 2",
-                "Project 3": "Project 3",
-                "Project 4": "Project 4",
-                "Work 1": "Work 1",
-                "Work 2": "Work 2",
-                "Work 3": "Work 3",
-                "Work 4": "Work 4",
-                "Link 1": "Link 1",
-                "Link 2": "Link 2",
-                "Link 3": "Link 3",
-                "Link 4": "Link 4",
-                "© 2025 Portfolio": "© 2025 Portfolio"
-            },
-            fr: {
-                "STUDENT PROJECTS": "Projets Étudiants",
-                "INDIVIDUAL WORK": "Travail Individuel",
-                "Project 1": "Projet 1",
-                "Project 2": "Projet 2",
-                "Project 3": "Projet 3",
-                "Project 4": "Projet 4",
-                "Work 1": "Travail 1",
-                "Work 2": "Travail 2",
-                "Work 3": "Travail 3",
-                "Work 4": "Travail 4",
-                "Link 1": "Lien 1",
-                "Link 2": "Lien 2",
-                "Link 3": "Lien 3",
-                "Link 4": "Lien 4",
-                "© 2025 Portfolio": "© 2025 Portefeuille"
-            },
-            sr: {
-                "STUDENT PROJECTS": "Studentski Projekti",
-                "INDIVIDUAL WORK": "Individualni Rad",
-                "Project 1": "Projekat 1",
-                "Project 2": "Projekat 2",
-                "Project 3": "Projekat 3",
-                "Project 4": "Projekat 4",
-                "Work 1": "Rad 1",
-                "Work 2": "Rad 2",
-                "Work 3": "Rad 3",
-                "Work 4": "Rad 4",
-                "Link 1": "Link 1",
-                "Link 2": "Link 2",
-                "Link 3": "Link 3",
-                "Link 4": "Link 4",
-                "© 2025 Portfolio": "© 2025 Portfolio"
-            }
+        // Prikazivanje i zatvaranje podkategorija na klik
+        const categories = document.querySelectorAll('.category');
+        const content = document.getElementById('content');
+        categories.forEach(category => {
+            category.addEventListener('click', () => {
+                const targetId = category.getAttribute('data-target');
+                const target = document.getElementById(targetId);
+
+                if (target.classList.contains('active')) {
+                    target.classList.remove('active');
+                    if (targetId !== 'contact-details') {
+                        content.classList.remove('active'); // Skrivanje sadržaja u centru samo za Individual Works
+                    }
+                } else {
+                    if (targetId !== 'contact-details') {
+                        const allSubcategories = document.querySelectorAll('.subcategories');
+                        allSubcategories.forEach(sub => {
+                            if (sub !== document.getElementById('contact-details')) sub.classList.remove('active');
+                        });
+                    }
+                    target.classList.add('active');
+                }
+            });
+        });
+
+        // Prikazivanje sadržaja za podkategorije
+        const subcategories = document.querySelectorAll('.subcategory');
+        const contentTitle = document.getElementById('content-title');
+        const contentGrid = document.getElementById('content-grid');
+
+        const subcategoryContent = {
+            "Subcategory 1": [
+                { title: "Work 1", img: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0", link: "https://drive.google.com" },
+                { title: "Work 2", img: "https://images.unsplash.com/photo-1519125323398-675f0f8d0f0f", link: "https://drive.google.com" },
+                { title: "Work 3", img: "https://images.unsplash.com/photo-1521747116042-5a810773d86f", link: "https://drive.google.com" },
+                { title: "Work 4", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085", link: "https://drive.google.com" }
+            ],
+            "Subcategory 2": [
+                { title: "Work 5", img: "https://images.unsplash.com/photo-1519389950473-47ba0277781c", link: "https://drive.google.com" },
+                { title: "Work 6", img: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d", link: "https://drive.google.com" },
+                { title: "Work 7", img: "https://images.unsplash.com/photo-1531297484001-2b5e4f6c408b", link: "https://drive.google.com" },
+                { title: "Work 8", img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3", link: "https://drive.google.com" }
+            ],
+            "Subcategory 3": [
+                { title: "Work 9", img: "https://images.unsplash.com/photo-1486312338219-9e3bafb08f5d", link: "https://drive.google.com" },
+                { title: "Work 10", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e", link: "https://drive.google.com" },
+                { title: "Work 11", img: "https://images.unsplash.com/photo-1518770660439-4636190af475", link: "https://drive.google.com" },
+                { title: "Work 12", img: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce", link: "https://drive.google.com" }
+            ],
+            "Subcategory 4": [
+                { title: "Work 13", img: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0", link: "https://drive.google.com" },
+                { title: "Work 14", img: "https://images.unsplash.com/photo-1519125323398-675f0f8d0f0f", link: "https://drive.google.com" },
+                { title: "Work 15", img: "https://images.unsplash.com/photo-1521747116042-5a810773d86f", link: "https://drive.google.com" },
+                { title: "Work 16", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085", link: "https://drive.google.com" }
+            ],
+            "Subcategory 5": [
+                { title: "Work 17", img: "https://images.unsplash.com/photo-1519389950473-47ba0277781c", link: "https://drive.google.com" },
+                { title: "Work 18", img: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d", link: "https://drive.google.com" },
+                { title: "Work 19", img: "https://images.unsplash.com/photo-1531297484001-2b5e4f6c408b", link: "https://drive.google.com" },
+                { title: "Work 20", img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3", link: "https://drive.google.com" }
+            ],
+            "Subcategory 6": [
+                { title: "Work 21", img: "https://images.unsplash.com/photo-1486312338219-9e3bafb08f5d", link: "https://drive.google.com" },
+                { title: "Work 22", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e", link: "https://drive.google.com" },
+                { title: "Work 23", img: "https://images.unsplash.com/photo-1518770660439-4636190af475", link: "https://drive.google.com" },
+                { title: "Work 24", img: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce", link: "https://drive.google.com" }
+            ],
+            "Subcategory 7": [
+                { title: "Work 25", img: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0", link: "https://drive.google.com" },
+                { title: "Work 26", img: "https://images.unsplash.com/photo-1519125323398-675f0f8d0f0f", link: "https://drive.google.com" },
+                { title: "Work 27", img: "https://images.unsplash.com/photo-1521747116042-5a810773d86f", link: "https://drive.google.com" },
+                { title: "Work 28", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085", link: "https://drive.google.com" }
+            ],
+            "Subcategory 8": [
+                { title: "Work 29", img: "https://images.unsplash.com/photo-1519389950473-47ba0277781c", link: "https://drive.google.com" },
+                { title: "Work 30", img: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d", link: "https://drive.google.com" },
+                { title: "Work 31", img: "https://images.unsplash.com/photo-1531297484001-2b5e4f6c408b", link: "https://drive.google.com" },
+                { title: "Work 32", img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3", link: "https://drive.google.com" }
+            ]
         };
 
-        function changeLanguage(lang) {
-            document.querySelectorAll("[data-translate]").forEach(element => {
-                const key = element.getAttribute("data-translate");
-                element.textContent = translations[lang][key] || key;
-            });
-            document.documentElement.lang = lang;
-        }
+        subcategories.forEach(sub => {
+            sub.addEventListener('click', () => {
+                const subName = sub.getAttribute('data-sub');
+                contentTitle.textContent = subName;
 
-        // Set initial language to Serbian
-        changeLanguage('sr');
+                // Praznjenje prethodnog grid-a
+                contentGrid.innerHTML = '';
+
+                // Dodavanje slika u grid
+                subcategoryContent[subName].forEach(item => {
+                    const gridItem = document.createElement('div');
+                    gridItem.classList.add('grid-item');
+                    gridItem.innerHTML = `
+                        <a href="${item.link}" target="_blank">
+                            <img src="${item.img}" alt="${item.title}">
+                        </a>
+                        <p>${item.title}</p>
+                    `;
+                    contentGrid.appendChild(gridItem);
+                });
+
+                // Prikazivanje sadržaja
+                content.classList.add('active');
+            });
+        });
+
+        // Inicijalno postavljanje jezika
+        updateLanguage('en');
     </script>
 </body>
 </html>
