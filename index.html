@@ -50,11 +50,6 @@
             font-size: 24px;
             font-weight: bold;
             cursor: pointer;
-            transition: opacity 0.3s ease;
-        }
-
-        .logo:hover {
-            opacity: 0.7;
         }
 
         nav {
@@ -279,21 +274,38 @@
             body { 
                 padding: 15px 15px 60px 15px;
                 display: block; 
-                min-height: auto;
-                height: auto; 
+                min-height: 100vh;
+                height: 100vh;
+                overflow: hidden;
             }
-            header { padding: 10px 15px; flex-direction: row; justify-content: space-between; align-items: center; }
+            body.expanded {
+                overflow: auto;
+                height: auto;
+            }
+            header { 
+                padding: 10px 15px; 
+                flex-direction: row; 
+                justify-content: space-between; 
+                align-items: center; 
+            }
             .logo { 
                 font-size: 18px; 
-                transition: none; /* Uklonjena animacija na mobilnom za dark/light mod */
+                transition: none; 
             }
-            .logo:hover { 
-                opacity: 0.7; /* Zadržan hover efekat, ali bez tranzicije */
-                transition: opacity 0.3s ease; /* Tranzicija samo za hover */
+            nav { 
+                gap: 10px; 
+                margin-right: 0; /* Pomeranje skroz uz desnu ivicu */
             }
-            nav { gap: 10px; }
-            button, select { padding: 6px; font-size: 14px; }
-            main { flex-direction: column; align-items: flex-start; margin-top: 60px; width: 100%; }
+            button, select { 
+                padding: 6px; 
+                font-size: 14px; 
+            }
+            main { 
+                flex-direction: column; 
+                align-items: flex-start; 
+                margin-top: 60px; 
+                width: 100%; 
+            }
             .projects { margin-bottom: 20px; width: 100%; }
             .category { font-size: 20px; margin-bottom: 10px; }
             .subcategories { margin-left: 15px; }
@@ -306,7 +318,7 @@
             .grid-item p { font-size: 12px; }
             #contact { 
                 position: fixed; 
-                bottom: 28px; /* Smanjen gap, Contact je uz footer */
+                bottom: 28px; 
                 right: 15px; 
                 text-align: right; 
                 background: rgba(255, 255, 255, 0.9); 
@@ -472,7 +484,7 @@
             if (activeSubcategory) updateContent(activeSubcategory, e.target.value);
         });
 
-        // Prikazivanje i zatvaranje podkategorija na klik
+        // Prikazivanje i zatvaranje podkategorija na klik sa resetovanjem skrola na mobilnom
         const categories = document.querySelectorAll('.category');
         const content = document.getElementById('content');
         categories.forEach(category => {
@@ -486,7 +498,7 @@
                         content.classList.remove('active');
                         activeSubcategory = null;
                         if (window.innerWidth <= 768) {
-                            document.body.style.height = 'auto';
+                            document.body.classList.remove('expanded');
                             window.scrollTo(0, 0);
                         }
                     }
@@ -496,6 +508,9 @@
                         allSubcategories.forEach(sub => {
                             if (sub !== document.getElementById('contact-details')) sub.classList.remove('active');
                         });
+                        if (window.innerWidth <= 768) {
+                            document.body.classList.add('expanded');
+                        }
                     }
                     target.classList.add('active');
                 }
@@ -528,7 +543,7 @@
             ],
             "Research Papers": [
                 { title: { en: "Sustainable Development (2024)", sr: "Одрживи развој (2024)", fr: "Développement durable (2024)" }, img: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0", link: { en: "https://drive.google.com/file/d/1dt2H-pE8bYhhcVvJmAzT_WyqsCSvrNLn/view?usp=drive_link", sr: "https://drive.google.com/file/d/1Wsl4l_PKCP9Z52r-HP1K4TduSCgPo7dW/view?usp=drive_link", fr: "https://drive.google.com/file/d/1JQd16VwCdyZiNN6arnmkmx_ObWhyJrqS/view?usp=drive_link" } },
-                { title: { en: "Cockchafers (2024)", sr: "Гундељи (2024)", fr: "Hannetons (2024)" }, img: "https://images.unsplash.com/photo-1519125323398-675f0f8d0f0f", link: { en: "https://drive.google.com/file/d/1dZODfOtv9TPhKKEcXD5MeqP2yU3NI_rx/view?usp=drive_link", sr: "https://drive.google.com/file/d/1iV2Aqd9e1g0z4OOYXahwkuu1TD6voNff/view?usp=drive_link", fr: "https://drive.google.com/file/d/1ZSsuasJFJPTt_8vw0YCwdS6mhL6v4aV9/view?usp=drive_link" } },
+                { title: { en: "Cockchafers (2024)", sr: "Гундељи (2024)", fr: "Hannetons (2024)" }, img: "https://images.unsplash.com/photo-1519125323398-675f0f8d0f0f", link: { en: "https://drive.google.com/file/d/1dZODfOtv9TPhKKEcXD5MeqP2yU3NI_rx/view?usp=drive_link", sr: "https://drive شهروندان: "https://drive.google.com/file/d/1iV2Aqd9e1g0z4OOYXahwkuu1TD6voNff/view?usp=drive_link", fr: "https://drive.google.com/file/d/1ZSsuasJFJPTt_8vw0YCwdS6mhL6v4aV9/view?usp=drive_link" } },
                 { title: { en: "Field Teaching Diary: Entomology (2024)", sr: "Дневник теренске наставе: Ентомологија (2024)", fr: "Journal d'enseignement sur le terrain: Entomologie (2024)" }, img: "https://images.unsplash.com/photo-1521747116042-5a810773d86f", link: { en: "https://drive.google.com/file/d/1Hpd2y2RVGaw3qTGwO_TTmVS0FTzm5azU/view?usp=drive_link", sr: "https://drive.google.com/file/d/1Ksssjy8qedJPMSX85fN7aAuBvjqwJkuN/view?usp=drive_link", fr: "https://drive.google.com/file/d/14E7wJdUrtakiltLaQoxyqlMoBujjRfTR/view?usp=drive_link" } },
                 { title: { en: "Field Teaching Diary: Practice (2023)", sr: "Дневник теренске наставе: Пракса (2023)", fr: "Journal d'enseignement sur le terrain: Pratique (2023)" }, img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085", link: { en: "https://drive.google.com/file/d/1CCIU7FzQNXWkmx0te7SDnBDW2DJ3Kkd3/view?usp=drive_link", sr: "https://drive.google.com/file/d/17kWKYLmNJVE7fVS0d7mDoke6PVCIndNQ/view?usp=drive_link", fr: "https://drive.google.com/file/d/1YgPEQ8oU_bjIpHMgIEusw_l9fYKUsUlU/view?usp=drive_link" } }
             ],
@@ -566,7 +581,7 @@
             contentGrid.appendChild(fragment);
             content.classList.add('active');
             if (window.innerWidth <= 768) {
-                document.body.style.height = 'auto';
+                document.body.classList.add('expanded');
             }
         }
 
