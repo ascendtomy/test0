@@ -285,7 +285,11 @@
             header { padding: 10px 15px; flex-direction: row; justify-content: space-between; align-items: center; }
             .logo { 
                 font-size: 18px; 
-                transition: opacity 0.3s ease;
+                transition: none; /* Uklonjena animacija na mobilnom za dark/light mod */
+            }
+            .logo:hover { 
+                opacity: 0.7; /* Zadržan hover efekat, ali bez tranzicije */
+                transition: opacity 0.3s ease; /* Tranzicija samo za hover */
             }
             nav { gap: 10px; }
             button, select { padding: 6px; font-size: 14px; }
@@ -300,7 +304,16 @@
             .grid-item { width: 45%; max-width: 200px; }
             .grid img { height: 120px; }
             .grid-item p { font-size: 12px; }
-            #contact { position: fixed; bottom: 70px; right: 15px; text-align: right; background: rgba(255, 255, 255, 0.9); padding: 10px; border-radius: 8px; z-index: 11; }
+            #contact { 
+                position: fixed; 
+                bottom: 28px; /* Smanjen gap, Contact je uz footer */
+                right: 15px; 
+                text-align: right; 
+                background: rgba(255, 255, 255, 0.9); 
+                padding: 10px; 
+                border-radius: 8px; 
+                z-index: 11; 
+            }
             body.dark #contact { background: rgba(0, 0, 0, 0.9); }
             #contact .subcategories { margin-left: 0; }
             h1 { font-size: 20px; }
@@ -312,7 +325,7 @@
         @media (max-width: 480px) {
             .grid-item { width: 100%; max-width: 300px; }
             .grid img { height: 150px; }
-            #contact { bottom: 60px; right: 10px; padding: 8px; }
+            #contact { bottom: 26px; right: 10px; padding: 8px; }
             footer { padding: 6px; }
         }
     </style>
@@ -429,7 +442,7 @@
             const isDark = savedTheme === 'dark';
             if (isDark) document.body.classList.add('dark');
             document.getElementById('language').value = savedLanguage;
-            await new Promise(resolve => setTimeout(resolve, 0)); // Omogućava brže renderovanje
+            await new Promise(resolve => setTimeout(resolve, 0));
             updateLanguageAndTheme(savedLanguage, isDark);
         })();
 
@@ -472,7 +485,6 @@
                     if (targetId !== 'contact-details') {
                         content.classList.remove('active');
                         activeSubcategory = null;
-                        // Reset visine i skrola na mobilnom
                         if (window.innerWidth <= 768) {
                             document.body.style.height = 'auto';
                             window.scrollTo(0, 0);
@@ -553,7 +565,6 @@
 
             contentGrid.appendChild(fragment);
             content.classList.add('active');
-            // Prilagođavanje visine na mobilnom kada se otvori sadržaj
             if (window.innerWidth <= 768) {
                 document.body.style.height = 'auto';
             }
