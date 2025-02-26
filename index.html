@@ -274,13 +274,13 @@
             body { 
                 padding: 15px 15px 60px 15px;
                 display: block; 
-                min-height: 100vh;
-                height: 100vh;
-                overflow: hidden;
+                min-height: 100vh; /* Vraća na početnu visinu bez skrola */
+                height: 100vh; /* Osigurava da nema skrola na početku */
+                overflow: hidden; /* Sprečava skrol kada je stranica u početnom stanju */
             }
             body.expanded {
-                overflow: auto;
-                height: auto;
+                overflow: auto; /* Omogućava skrol kada se otvori sadržaj */
+                height: auto; /* Prilagođava visinu sadržaju */
             }
             header { 
                 padding: 10px 15px; 
@@ -294,7 +294,7 @@
             }
             nav { 
                 gap: 10px; 
-                margin-right: 0; /* Pomeranje skroz uz desnu ivicu */
+                margin-right: 0px; /* Pomeranje skroz uz desnu ivicu, isto kao Contact */
             }
             button, select { 
                 padding: 6px; 
@@ -498,8 +498,8 @@
                         content.classList.remove('active');
                         activeSubcategory = null;
                         if (window.innerWidth <= 768) {
-                            document.body.classList.remove('expanded');
-                            window.scrollTo(0, 0);
+                            document.body.classList.remove('expanded'); // Vraća na početno stanje bez skrola
+                            window.scrollTo(0, 0); // Resetuje skrol na vrh
                         }
                     }
                 } else {
@@ -509,7 +509,7 @@
                             if (sub !== document.getElementById('contact-details')) sub.classList.remove('active');
                         });
                         if (window.innerWidth <= 768) {
-                            document.body.classList.add('expanded');
+                            document.body.classList.add('expanded'); // Omogućava skrol kada je sadržaj otvoren
                         }
                     }
                     target.classList.add('active');
@@ -543,7 +543,7 @@
             ],
             "Research Papers": [
                 { title: { en: "Sustainable Development (2024)", sr: "Одрживи развој (2024)", fr: "Développement durable (2024)" }, img: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0", link: { en: "https://drive.google.com/file/d/1dt2H-pE8bYhhcVvJmAzT_WyqsCSvrNLn/view?usp=drive_link", sr: "https://drive.google.com/file/d/1Wsl4l_PKCP9Z52r-HP1K4TduSCgPo7dW/view?usp=drive_link", fr: "https://drive.google.com/file/d/1JQd16VwCdyZiNN6arnmkmx_ObWhyJrqS/view?usp=drive_link" } },
-                { title: { en: "Cockchafers (2024)", sr: "Гундељи (2024)", fr: "Hannetons (2024)" }, img: "https://images.unsplash.com/photo-1519125323398-675f0f8d0f0f", link: { en: "https://drive.google.com/file/d/1dZODfOtv9TPhKKEcXD5MeqP2yU3NI_rx/view?usp=drive_link", sr: "https://drive شهروندان: "https://drive.google.com/file/d/1iV2Aqd9e1g0z4OOYXahwkuu1TD6voNff/view?usp=drive_link", fr: "https://drive.google.com/file/d/1ZSsuasJFJPTt_8vw0YCwdS6mhL6v4aV9/view?usp=drive_link" } },
+                { title: { en: "Cockchafers (2024)", sr: "Гундељи (2024)", fr: "Hannetons (2024)" }, img: "https://images.unsplash.com/photo-1519125323398-675f0f8d0f0f", link: { en: "https://drive.google.com/file/d/1dZODfOtv9TPhKKEcXD5MeqP2yU3NI_rx/view?usp=drive_link", sr: "https://drive.google.com/file/d/1iV2Aqd9e1g0z4OOYXahwkuu1TD6voNff/view?usp=drive_link", fr: "https://drive.google.com/file/d/1ZSsuasJFJPTt_8vw0YCwdS6mhL6v4aV9/view?usp=drive_link" } },
                 { title: { en: "Field Teaching Diary: Entomology (2024)", sr: "Дневник теренске наставе: Ентомологија (2024)", fr: "Journal d'enseignement sur le terrain: Entomologie (2024)" }, img: "https://images.unsplash.com/photo-1521747116042-5a810773d86f", link: { en: "https://drive.google.com/file/d/1Hpd2y2RVGaw3qTGwO_TTmVS0FTzm5azU/view?usp=drive_link", sr: "https://drive.google.com/file/d/1Ksssjy8qedJPMSX85fN7aAuBvjqwJkuN/view?usp=drive_link", fr: "https://drive.google.com/file/d/14E7wJdUrtakiltLaQoxyqlMoBujjRfTR/view?usp=drive_link" } },
                 { title: { en: "Field Teaching Diary: Practice (2023)", sr: "Дневник теренске наставе: Пракса (2023)", fr: "Journal d'enseignement sur le terrain: Pratique (2023)" }, img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085", link: { en: "https://drive.google.com/file/d/1CCIU7FzQNXWkmx0te7SDnBDW2DJ3Kkd3/view?usp=drive_link", sr: "https://drive.google.com/file/d/17kWKYLmNJVE7fVS0d7mDoke6PVCIndNQ/view?usp=drive_link", fr: "https://drive.google.com/file/d/1YgPEQ8oU_bjIpHMgIEusw_l9fYKUsUlU/view?usp=drive_link" } }
             ],
