@@ -104,7 +104,7 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="black" d="M7 10l5 5 5-5z"/></svg>') no-repeat right 5px center;
-            padding-right: 22px; /* Prilagođeno da razmak bude 5px između teksta i strelice */
+            padding-right: 22px;
         }
 
         body.dark select {
@@ -271,7 +271,12 @@
         }
 
         @media (max-width: 768px) {
-            body { padding: 15px 15px 0 15px; display: block; min-height: 100vh; }
+            body { 
+                padding: 15px 15px 60px 15px;
+                display: block; 
+                min-height: auto;
+                height: auto; 
+            }
             header { padding: 10px 15px; flex-direction: row; justify-content: space-between; align-items: center; }
             .logo { font-size: 18px; }
             nav { gap: 10px; }
@@ -287,7 +292,7 @@
             .grid-item { width: 45%; max-width: 200px; }
             .grid img { height: 120px; }
             .grid-item p { font-size: 12px; }
-            #contact { position: fixed; bottom: 50px; right: 15px; text-align: right; background: rgba(255, 255, 255, 0.9); padding: 10px; border-radius: 8px; z-index: 11; }
+            #contact { position: fixed; bottom: 70px; right: 15px; text-align: right; background: rgba(255, 255, 255, 0.9); padding: 10px; border-radius: 8px; z-index: 11; }
             body.dark #contact { background: rgba(0, 0, 0, 0.9); }
             #contact .subcategories { margin-left: 0; }
             h1 { font-size: 20px; }
@@ -299,7 +304,7 @@
         @media (max-width: 480px) {
             .grid-item { width: 100%; max-width: 300px; }
             .grid img { height: 150px; }
-            #contact { bottom: 40px; right: 10px; padding: 8px; }
+            #contact { bottom: 60px; right: 10px; padding: 8px; }
             footer { padding: 6px; }
         }
     </style>
@@ -352,39 +357,8 @@
     </footer>
 
     <script>
-        // Refresh stranice na klik na logo
-        const logo = document.querySelector('.logo');
-        logo.addEventListener('click', () => {
-            window.location.reload();
-        });
-
-        // Dark mode toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeText = document.getElementById('theme-text');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark');
-            const isDark = document.body.classList.contains('dark');
-            const lang = languageSelect.value;
-            themeToggle.innerHTML = `<span id="theme-text">${lang === 'sr' ? 'Тема' : lang === 'fr' ? 'Thème' : 'Theme'}</span> <span class="symbol">${isDark ? '〇' : '✳︎'}</span>`;
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            updateLanguage(lang);
-        });
-
-        // Promena jezika
-        const languageSelect = document.getElementById('language');
-        let activeSubcategory = null;
-
-        languageSelect.addEventListener('change', (e) => {
-            localStorage.setItem('language', e.target.value);
-            updateLanguage(e.target.value);
-            if (activeSubcategory) {
-                updateContent(activeSubcategory, e.target.value);
-            }
-            const isDark = document.body.classList.contains('dark');
-            themeToggle.innerHTML = `<span id="theme-text">${e.target.value === 'sr' ? 'Тема' : e.target.value === 'fr' ? 'Thème' : 'Theme'}</span> <span class="symbol">${isDark ? '〇' : '✳︎'}</span>`;
-        });
-
-        function updateLanguage(lang) {
+        // Funkcija za ažuriranje jezika i teme
+        function updateLanguageAndTheme(lang, isDark) {
             const individualTitle = document.querySelector('[data-target="individual-works"]');
             const individualTitle2 = document.querySelector('[data-target="individual-works-2"]');
             const contactTitle = document.querySelector('[data-target="contact-details"]');
@@ -393,6 +367,7 @@
             const subs1 = document.querySelectorAll('#individual-works .subcategory');
             const subs2 = document.querySelectorAll('#individual-works-2 .subcategory');
             const logoText = document.querySelector('.logo');
+            const themeToggle = document.getElementById('theme-toggle');
 
             if (lang === 'sr') {
                 logoText.textContent = 'Никола Томић: Портфолио';
@@ -407,6 +382,7 @@
                 subs1[3].textContent = 'Семинарски радови';
                 subs2[0].textContent = 'Приватни вртови';
                 subs2[1].textContent = 'Дизајн логотипа';
+                themeToggle.innerHTML = `<span id="theme-text">Тема</span> <span class="symbol">${isDark ? '〇' : '✳︎'}</span>`;
             } else if (lang === 'en') {
                 logoText.textContent = 'Nikola Tomić: Portfolio';
                 individualTitle.textContent = 'Student Projects';
@@ -420,6 +396,7 @@
                 subs1[3].textContent = 'Research Papers';
                 subs2[0].textContent = 'Private Gardens';
                 subs2[1].textContent = 'Logo Design';
+                themeToggle.innerHTML = `<span id="theme-text">Theme</span> <span class="symbol">${isDark ? '〇' : '✳︎'}</span>`;
             } else if (lang === 'fr') {
                 logoText.textContent = 'Nikola Tomić: Portfolio';
                 individualTitle.textContent = 'Projets étudiants';
@@ -433,24 +410,42 @@
                 subs1[3].textContent = 'Papiers de recherche';
                 subs2[0].textContent = 'Jardins privés';
                 subs2[1].textContent = 'Conception de logos';
+                themeToggle.innerHTML = `<span id="theme-text">Thème</span> <span class="symbol">${isDark ? '〇' : '✳︎'}</span>`;
             }
         }
 
-        // Inicijalizacija stranice sa sačuvanim podešavanjima
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme');
-            const savedLanguage = localStorage.getItem('language') || 'en';
+        // Inicijalizacija stranice
+        const savedTheme = localStorage.getItem('theme');
+        const savedLanguage = localStorage.getItem('language') || 'en';
+        const isDark = savedTheme === 'dark';
+        if (isDark) document.body.classList.add('dark');
+        document.getElementById('language').value = savedLanguage;
+        updateLanguageAndTheme(savedLanguage, isDark);
 
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark');
-                themeToggle.innerHTML = `<span id="theme-text">${savedLanguage === 'sr' ? 'Тема' : savedLanguage === 'fr' ? 'Thème' : 'Theme'}</span> <span class="symbol">〇</span>`;
-            } else {
-                document.body.classList.remove('dark');
-                themeToggle.innerHTML = `<span id="theme-text">${savedLanguage === 'sr' ? 'Тема' : savedLanguage === 'fr' ? 'Thème' : 'Theme'}</span> <span class="symbol">✳︎</span>`;
-            }
+        // Refresh stranice na klik na logo
+        const logo = document.querySelector('.logo');
+        logo.addEventListener('click', () => {
+            window.location.reload();
+        });
 
-            languageSelect.value = savedLanguage;
-            updateLanguage(savedLanguage);
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            const lang = document.getElementById('language').value;
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateLanguageAndTheme(lang, isDark);
+        });
+
+        // Promena jezika
+        const languageSelect = document.getElementById('language');
+        let activeSubcategory = null;
+        languageSelect.addEventListener('change', (e) => {
+            localStorage.setItem('language', e.target.value);
+            const isDark = document.body.classList.contains('dark');
+            updateLanguageAndTheme(e.target.value, isDark);
+            if (activeSubcategory) updateContent(activeSubcategory, e.target.value);
         });
 
         // Prikazivanje i zatvaranje podkategorija na klik
@@ -466,6 +461,11 @@
                     if (targetId !== 'contact-details') {
                         content.classList.remove('active');
                         activeSubcategory = null;
+                        // Reset visine i skrola na mobilnom
+                        if (window.innerWidth <= 768) {
+                            document.body.style.height = 'auto';
+                            window.scrollTo(0, 0);
+                        }
                     }
                 } else {
                     if (targetId !== 'contact-details') {
@@ -479,7 +479,7 @@
             });
         });
 
-        // Prikazivanje sadržaja za podkategorije
+        // Prikazivanje sadržaja za podkategorije sa hyperlinkovima i animacijama
         const subcategories = document.querySelectorAll('.subcategory');
         const contentTitle = document.getElementById('content-title');
         const contentGrid = document.getElementById('content-grid');
@@ -542,6 +542,10 @@
 
             contentGrid.appendChild(fragment);
             content.classList.add('active');
+            // Prilagođavanje visine na mobilnom kada se otvori sadržaj
+            if (window.innerWidth <= 768) {
+                document.body.style.height = 'auto';
+            }
         }
 
         subcategories.forEach(sub => {
