@@ -50,7 +50,7 @@
             font-size: 24px;
             font-weight: bold;
             cursor: pointer;
-            transition: opacity 0.3s ease; /* Uklonjena bilo kakva animacija osim opacity */
+            transition: opacity 0.3s ease; /* Samo opacity tranzicija */
         }
 
         .logo:hover {
@@ -283,7 +283,10 @@
                 height: auto; 
             }
             header { padding: 10px 15px; flex-direction: row; justify-content: space-between; align-items: center; }
-            .logo { font-size: 18px; }
+            .logo { 
+                font-size: 18px; 
+                transition: opacity 0.3s ease; /* Osigurava da nema drugih animacija ni na mobilnom */
+            }
             nav { gap: 10px; }
             button, select { padding: 6px; font-size: 14px; }
             main { flex-direction: column; align-items: flex-start; margin-top: 60px; width: 100%; }
