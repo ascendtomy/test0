@@ -50,7 +50,7 @@
             font-size: 24px;
             font-weight: bold;
             cursor: pointer;
-            transition: opacity 0.3s ease; /* Samo opacity tranzicija */
+            transition: opacity 0.3s ease;
         }
 
         .logo:hover {
@@ -285,7 +285,7 @@
             header { padding: 10px 15px; flex-direction: row; justify-content: space-between; align-items: center; }
             .logo { 
                 font-size: 18px; 
-                transition: opacity 0.3s ease; /* Osigurava da nema drugih animacija ni na mobilnom */
+                transition: opacity 0.3s ease;
             }
             nav { gap: 10px; }
             button, select { padding: 6px; font-size: 14px; }
@@ -422,13 +422,16 @@
             }
         }
 
-        // Inicijalizacija stranice
-        const savedTheme = localStorage.getItem('theme');
-        const savedLanguage = localStorage.getItem('language') || 'en';
-        const isDark = savedTheme === 'dark';
-        if (isDark) document.body.classList.add('dark');
-        document.getElementById('language').value = savedLanguage;
-        updateLanguageAndTheme(savedLanguage, isDark);
+        // Optimizovana inicijalizacija stranice
+        (async () => {
+            const savedTheme = localStorage.getItem('theme');
+            const savedLanguage = localStorage.getItem('language') || 'en';
+            const isDark = savedTheme === 'dark';
+            if (isDark) document.body.classList.add('dark');
+            document.getElementById('language').value = savedLanguage;
+            await new Promise(resolve => setTimeout(resolve, 0)); // Omogućava brže renderovanje
+            updateLanguageAndTheme(savedLanguage, isDark);
+        })();
 
         // Refresh stranice na klik na logo
         const logo = document.querySelector('.logo');
