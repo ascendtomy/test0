@@ -274,13 +274,8 @@
             body { 
                 padding: 15px 15px 60px 15px;
                 display: block; 
-                min-height: 100vh; /* Vraća na početnu visinu bez skrola */
-                height: 100vh; /* Osigurava da nema skrola na početku */
-                overflow: hidden; /* Sprečava skrol kada je stranica u početnom stanju */
-            }
-            body.expanded {
-                overflow: auto; /* Omogućava skrol kada se otvori sadržaj */
-                height: auto; /* Prilagođava visinu sadržaju */
+                min-height: auto;
+                height: auto; 
             }
             header { 
                 padding: 10px 15px; 
@@ -294,7 +289,7 @@
             }
             nav { 
                 gap: 10px; 
-                margin-right: 0px; /* Pomeranje skroz uz desnu ivicu, isto kao Contact */
+                padding-right: 0px; /* Pomeranje skroz uz desnu ivicu */
             }
             button, select { 
                 padding: 6px; 
@@ -390,7 +385,7 @@
     </footer>
 
     <script>
-        // Funkcija za ažuriranje jezika i teme
+        // Funkcija za ažuriranje jezika i теме
         function updateLanguageAndTheme(lang, isDark) {
             const individualTitle = document.querySelector('[data-target="individual-works"]');
             const individualTitle2 = document.querySelector('[data-target="individual-works-2"]');
@@ -458,7 +453,7 @@
             updateLanguageAndTheme(savedLanguage, isDark);
         })();
 
-        // Refresh stranice na klik na logo
+        // Refresh stranice na klik на logo
         const logo = document.querySelector('.logo');
         logo.addEventListener('click', () => {
             window.location.reload();
@@ -484,7 +479,7 @@
             if (activeSubcategory) updateContent(activeSubcategory, e.target.value);
         });
 
-        // Prikazivanje i zatvaranje podkategorija na klik sa resetovanjem skrola na mobilnom
+        // Prikazivanje i zatvaranje podkategorija на klik са ресетовањем скрола на мобилном
         const categories = document.querySelectorAll('.category');
         const content = document.getElementById('content');
         categories.forEach(category => {
@@ -498,7 +493,7 @@
                         content.classList.remove('active');
                         activeSubcategory = null;
                         if (window.innerWidth <= 768) {
-                            document.body.classList.remove('expanded'); // Vraća na početno stanje bez skrola
+                            document.body.style.height = '100vh'; // Vraća na početnu visinu
                             window.scrollTo(0, 0); // Resetuje skrol na vrh
                         }
                     }
@@ -508,16 +503,13 @@
                         allSubcategories.forEach(sub => {
                             if (sub !== document.getElementById('contact-details')) sub.classList.remove('active');
                         });
-                        if (window.innerWidth <= 768) {
-                            document.body.classList.add('expanded'); // Omogućava skrol kada je sadržaj otvoren
-                        }
                     }
                     target.classList.add('active');
                 }
             });
         });
 
-        // Prikazivanje sadržaja za podkategorije sa hyperlinkovima i animacijama
+        // Prikazivanje sadržaja za podkategorije са hyperlinkovima i animacijama
         const subcategories = document.querySelectorAll('.subcategory');
         const contentTitle = document.getElementById('content-title');
         const contentGrid = document.getElementById('content-grid');
@@ -581,7 +573,7 @@
             contentGrid.appendChild(fragment);
             content.classList.add('active');
             if (window.innerWidth <= 768) {
-                document.body.classList.add('expanded');
+                document.body.style.height = 'auto';
             }
         }
 
