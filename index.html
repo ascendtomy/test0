@@ -21,7 +21,7 @@
             justify-content: space-between;
             align-items: center;
             min-height: 100vh;
-            padding: 40px;
+            padding: 40px 40px 0 40px;
         }
 
         body.dark {
@@ -39,7 +39,7 @@
             padding: 20px;
             background: #fff;
             z-index: 10;
-            transition: background 0.4s ease;
+            transition: background 0.4s ease, color 0.4s ease;
         }
 
         body.dark header {
@@ -69,11 +69,26 @@
             background: none;
             cursor: pointer;
             color: #000;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease, background 0.4s ease, color 0.4s ease;
         }
 
         button:hover, select:hover {
             opacity: 0.7;
+        }
+
+        #theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #theme-toggle .symbol {
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        #theme-toggle:active .symbol {
+            transform: rotate(90deg) scale(0.95);
         }
 
         body.dark button, body.dark select {
@@ -82,6 +97,18 @@
 
         body.dark select {
             background: #000;
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="black" d="M7 10l5 5 5-5z"/></svg>') no-repeat right 5px center;
+            padding-right: 22px; /* Prilagođeno da razmak bude 5px između teksta i strelice */
+        }
+
+        body.dark select {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="white" d="M7 10l5 5 5-5z"/></svg>') no-repeat right 5px center #000;
         }
 
         main {
@@ -205,14 +232,17 @@
             left: 0;
             right: 0;
             text-align: center;
-            padding: 20px;
+            padding: 10px;
             background: #fff;
-            transition: background 0.4s ease;
+            transition: background 0.4s ease, color 0.4s ease;
             z-index: 10;
+            font-size: 12px;
+            color: #6e6e73;
         }
 
         body.dark footer {
             background: #000;
+            color: #8e8e93;
         }
 
         @keyframes slideIn {
@@ -241,7 +271,7 @@
         }
 
         @media (max-width: 768px) {
-            body { padding: 15px 15px 60px 15px; display: block; min-height: auto; }
+            body { padding: 15px 15px 0 15px; display: block; min-height: 100vh; }
             header { padding: 10px 15px; flex-direction: row; justify-content: space-between; align-items: center; }
             .logo { font-size: 18px; }
             nav { gap: 10px; }
@@ -261,14 +291,16 @@
             body.dark #contact { background: rgba(0, 0, 0, 0.9); }
             #contact .subcategories { margin-left: 0; }
             h1 { font-size: 20px; }
-            footer { position: fixed; bottom: 0; padding: 10px; margin-top: 0; }
+            footer { padding: 8px; }
+            select { background: none; padding-right: 10px; }
+            body.dark select { background: none; }
         }
 
         @media (max-width: 480px) {
             .grid-item { width: 100%; max-width: 300px; }
             .grid img { height: 150px; }
             #contact { bottom: 40px; right: 10px; padding: 8px; }
-            footer { padding: 8px; }
+            footer { padding: 6px; }
         }
     </style>
 </head>
@@ -276,7 +308,7 @@
     <header>
         <div class="logo">Nikola Tomić: Portfolio</div>
         <nav>
-            <button id="theme-toggle">×</button>
+            <button id="theme-toggle"><span id="theme-text">Theme</span> <span class="symbol">✳︎</span></button>
             <select id="language">
                 <option value="en">English</option>
                 <option value="sr">Српски</option>
@@ -316,7 +348,7 @@
     </main>
 
     <footer>
-        <p>© 2025 NT</p>
+        <p>Copyright © 2025 NT. All rights reserved.</p>
     </footer>
 
     <script>
@@ -328,11 +360,14 @@
 
         // Dark mode toggle
         const themeToggle = document.getElementById('theme-toggle');
+        const themeText = document.getElementById('theme-text');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('dark');
-            themeToggle.textContent = document.body.classList.contains('dark') ? '-' : '×';
-            localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-            updateLanguage(languageSelect.value);
+            const isDark = document.body.classList.contains('dark');
+            const lang = languageSelect.value;
+            themeToggle.innerHTML = `<span id="theme-text">${lang === 'sr' ? 'Тема' : lang === 'fr' ? 'Thème' : 'Theme'}</span> <span class="symbol">${isDark ? '〇' : '✳︎'}</span>`;
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateLanguage(lang);
         });
 
         // Promena jezika
@@ -345,6 +380,8 @@
             if (activeSubcategory) {
                 updateContent(activeSubcategory, e.target.value);
             }
+            const isDark = document.body.classList.contains('dark');
+            themeToggle.innerHTML = `<span id="theme-text">${e.target.value === 'sr' ? 'Тема' : e.target.value === 'fr' ? 'Thème' : 'Theme'}</span> <span class="symbol">${isDark ? '〇' : '✳︎'}</span>`;
         });
 
         function updateLanguage(lang) {
@@ -406,10 +443,10 @@
 
             if (savedTheme === 'dark') {
                 document.body.classList.add('dark');
-                themeToggle.textContent = '-';
+                themeToggle.innerHTML = `<span id="theme-text">${savedLanguage === 'sr' ? 'Тема' : savedLanguage === 'fr' ? 'Thème' : 'Theme'}</span> <span class="symbol">〇</span>`;
             } else {
                 document.body.classList.remove('dark');
-                themeToggle.textContent = '×';
+                themeToggle.innerHTML = `<span id="theme-text">${savedLanguage === 'sr' ? 'Тема' : savedLanguage === 'fr' ? 'Thème' : 'Theme'}</span> <span class="symbol">✳︎</span>`;
             }
 
             languageSelect.value = savedLanguage;
