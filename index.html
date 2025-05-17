@@ -124,6 +124,14 @@
             color: #fff;
         }
 
+        #language-toggle span {
+            color: #000;
+        }
+
+        body.dark #language-toggle span {
+            color: #fff;
+        }
+
         #language-toggle::after {
             content: '';
             position: absolute;
@@ -360,11 +368,15 @@
             z-index: 100;
             justify-content: center;
             align-items: center;
-            animation: fadeInModal 0.3s ease-out;
         }
 
         .modal.active {
             display: flex;
+            animation: fadeInModal 0.3s ease-out;
+        }
+
+        .modal.closing {
+            animation: fadeOutModal 0.3s ease-in forwards;
         }
 
         .modal-content {
@@ -377,7 +389,14 @@
             overflow: hidden;
             position: relative;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content.active {
             animation: scaleInModal 0.3s ease-out;
+        }
+
+        .modal-content.closing {
+            animation: scaleOutModal 0.3s ease-in forwards;
         }
 
         body.dark .modal-content {
@@ -489,9 +508,19 @@
             to { opacity: 1; }
         }
 
+        @keyframes fadeOutModal {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
         @keyframes scaleInModal {
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes scaleOutModal {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
         }
 
         @media (max-width: 768px) {
@@ -543,8 +572,8 @@
             #content { position: relative; top: auto; left: auto; transform: none; width: 100%; margin: 20px 0; }
             #content.active { animation: fadeInMobile 0.5s ease-out; }
             .grid { gap: 15px; max-width: 100%; padding: 0 10px; }
-            .grid-item { width: 45%; max-width: 200px; }
-            .grid img { height: 120px; }
+            .grid-item { width: 45%; }
+            .grid img { height: 150px; }
             .grid-item p { font-size: 12px; }
             #contact { 
                 position: fixed; 
@@ -570,7 +599,7 @@
         }
 
         @media (max-width: 480px) {
-            .grid-item { width: 100%; max-width: 300px; }
+            .grid-item { width: 100%; }
             .grid img { height: 150px; }
             #contact { bottom: 26px; right: 10px; padding: 8px; }
             footer { padding: 6px; }
@@ -802,19 +831,26 @@
         const pdfViewer = document.getElementById('pdf-viewer');
         const modalClose = document.querySelector('.modal-close');
         const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.querySelector('.modal-content');
 
         function openModal(pdfUrl, title) {
             pdfViewer.src = pdfUrl;
             modalTitle.textContent = title;
             modal.classList.add('active');
+            modalContent.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
-            modal.classList.remove('active');
-            pdfViewer.src = '';
-            modalTitle.textContent = '';
-            document.body.style.overflow = '';
+            modal.classList.add('closing');
+            modalContent.classList.add('closing');
+            setTimeout(() => {
+                modal.classList.remove('active', 'closing');
+                modalContent.classList.remove('active', 'closing');
+                pdfViewer.src = '';
+                modalTitle.textContent = '';
+                document.body.style.overflow = '';
+            }, 300); // Match animation duration
         }
 
         modalClose.addEventListener('click', closeModal);
